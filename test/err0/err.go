@@ -16,7 +16,7 @@ func errA(err error) {
 
 func errB(err error) {
 	fmt.Println("Oh snap")
-	returns("very", "bad")
+	returns("gopher","turtle")
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,58 +26,60 @@ added only before statements that can return in an error
 */
 // if i, he works like deferr
 
-type ptype struct{
-	ret interface{}
-}
-
-type err1337 interface{}
 
 func recovererr(a ...interface{}) (r interface{}) {
-	fmt.Println("HELLO")
-	r = recover()
-
-	switch r.(type) {
-	case ptype:
-	fmt.Println("set args here")
+	if r = recover(); r == "ar86e7a6rh" {
 		return nil
 	}
-	if (len(a) == 0) {
-		return r
+	if (len(a) == 1) && r != nil {
+		panic(r)
 	}
-	panic(r)
+	return r
 }
 
 func returns(a ...interface{}) {
-	fmt.Println("okay we returns", a)
-
-	panic(ptype{a})
+	panic("ar86e7a6rh")
 }
 
-func err2(fun err1337, arguments ...err1337) (err1337, err1337) {
-	e := errvariadic(fun, arguments)
-	return e[0], e[1]
-}
-
-func err0(fun err1337) {
-	errvariadic(fun)
-}
-
-//this is for functions with no return values
-func errvariadic(fun err1337, arguments ...err1337) (rets []err1337) {
-	defer recovererr(len(arguments))
-
-	var vals []reflect.Value
-
-	for _, arg := range arguments {
-		vals = append(vals, reflect.ValueOf(arg))
+func toValues(in []interface{}) []reflect.Value {
+	out := make([]reflect.Value, len(in))
+	for i := range in {
+		if in[i] != nil {
+			out[i] = reflect.ValueOf(in[i])
+		} else {
+			out[i] = reflect.ValueOf(&in[i]).Elem()
+		}
 	}
+	return out
+}
 
-	outs := reflect.ValueOf(fun).Call(vals)
-
-	fmt.Println("outs are:", outs)
-
-	for _, out := range outs {
-		rets = append(rets, out)
+// toValues is a helper function that creates and returns a slice of
+// interface{} values based on a given slice of reflect.Value values
+func toInterfaces(in []reflect.Value) []interface{} {
+	out := make([]interface{}, len(in))
+	for i, vl := range in {
+		//		if vl.IsNil() {
+		//		out[i] = nil
+		//} else {
+		out[i] = vl.Interface()
+		//}
 	}
-	return
+	return out
+}
+
+func err2(fun interface{}, args ...interface{}) (interface{},interface{}) {
+	o := errvariadic(fun, toValues(args))
+
+	fmt.Println("got ", o, "#")
+	return nil, nil
+//	return o[0], o[1]
+}
+
+func err0(fun interface{}) {
+	errvariadic(fun, []reflect.Value{})
+}
+
+func errvariadic(fun interface{}, vals []reflect.Value) ([]interface{}) {
+	defer recovererr(len(vals))
+	return toInterfaces(reflect.ValueOf(fun).Call(vals))
 }
