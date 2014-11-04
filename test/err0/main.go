@@ -14,7 +14,7 @@ func successer() error {
 }
 
 func failer() error {
-	//	panic("yeah")
+	panic("yeah")
 
 	return ErrGopher
 }
@@ -68,7 +68,7 @@ func foo() {
 	fmt.Println("This will happen")
 
 	defer func() {
-		if r := Recover(); r != nil {
+		if r := X(recover()); r != nil {
 			fmt.Println("recovered from ", r)
 		}
 	}()

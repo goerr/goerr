@@ -11,7 +11,7 @@ func i(i interface{}) {
 
 func errA(err error) {
 	fmt.Println("Oh very")
-	Return()
+//	Return()
 }
 
 func errB(err error) {
@@ -26,20 +26,14 @@ added only before statements that can return in an error
 */
 // if i, he works like deferr
 
-func Recover(a ...*[]interface{}) (r interface{}) {
-	r = recover()
-	if len(a) != 0 {
+
+func X(r interface{}) (interface{}) {
 	switch r.(type) {
 	case []interface{}:
-		for _, ptr := range a {
-			(*ptr) = r.([]interface{})
-		}
-
-		return nil
+	return nil
 	default:
-		panic(r)
-	}}
 	return r
+	}
 }
 
 func Return(a ...interface{}) {
@@ -84,6 +78,16 @@ func OR0(fun Q) {
 }
 
 func errvariadic(fun interface{}, vals []reflect.Value) (out []interface{}) {
-	defer Recover(&out)
+	defer func(){
+		r := recover()
+		switch r.(type) {
+		case []interface{}:
+		out = r.([]interface{})
+		default:
+		if r != nil {
+			panic(r)
+		}
+		}
+	}()
 	return toInterfaces(reflect.ValueOf(fun).Call(vals))
 }
