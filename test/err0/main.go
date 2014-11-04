@@ -79,11 +79,9 @@ func foo() {
 }
 
 func main() {
-	err0(foo)
+	OR0(foo)
 
-//	rts, str := "go","en"
-
-	rts, str := err2(bar,(true))
+	rts, str := OR2(bar,(true))
 
 	fmt.Println("This surely happens", str, rts)
 }

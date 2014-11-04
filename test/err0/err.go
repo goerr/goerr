@@ -73,12 +73,12 @@ func toInterfaces(in []reflect.Value) []interface{} {
 	return out
 }
 
-func err2(fun interface{}, args ...interface{}) (interface{},interface{}) {
+func OR2(fun interface{}, args ...interface{}) (interface{},interface{}) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1]
 }
 
-func err0(fun interface{}) {
+func OR0(fun interface{}) {
 	errvariadic(fun, []reflect.Value{})
 }
 
