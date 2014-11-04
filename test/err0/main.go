@@ -51,7 +51,7 @@ func foo() {
 func main() {
 	goerr.OR0(foo)
 
-	rts, str := goerr.OR2(bar,(true))
+	rts, str := goerr.OR2(bar,(false))
 
 	fmt.Println("This surely happens", str, rts)
 }
