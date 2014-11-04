@@ -11,12 +11,12 @@ func i(i interface{}) {
 
 func errA(err error) {
 	fmt.Println("Oh very")
-	returns()
+	Return()
 }
 
 func errB(err error) {
 	fmt.Println("Oh snap")
-	returns("gopher","turtle")
+	Return("gopher","turtle")
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ func recovererr(a ...*[]interface{}) (r interface{}) {
 	return r
 }
 
-func returns(a ...interface{}) {
+func Return(a ...interface{}) {
 	panic(a)
 }
 
