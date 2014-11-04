@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-func X(r interface{}) (interface{}) {
+func XQZ(r interface{}) (interface{}) {
 	switch r.(type) {
 	case panik:
 	return nil

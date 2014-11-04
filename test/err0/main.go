@@ -38,7 +38,7 @@ func foo() {
 	fmt.Println("This will happen")
 
 	defer func() {
-		if r := goerr.X(recover()); r != nil {
+		if r := goerr.XQZ(recover()); r != nil {
 			fmt.Println("recovered from ", r)
 		}
 	}()
