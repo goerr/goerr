@@ -9,7 +9,13 @@ var (
 	ErrGopher = fmt.Errorf("Gopher failed")
 )
 
+func successer() error {
+	return nil
+}
+
 func failer() error {
+	//	panic("yeah")
+
 	return ErrGopher
 }
 
@@ -23,7 +29,7 @@ func foo() {
 }
 */
 
-
+/*
 //Handled foo
 func foo() {
 	err := failer()
@@ -40,19 +46,44 @@ func main() {
 	foo()
 	fmt.Println("This surely happens")
 }
+*/
 
-/*
+//deleted bar
+func bar(i bool) (j string, k string) {
+	fmt.Println("Branching")
+
+	if i {
+		errB(successer())
+	} else {
+		errB(failer())
+	}
+	return "hello","world"
+}
+
 //Deleted foo
 func foo() {
-	defer def()
 
-	err(failer()).ret()
+	errA(successer())
+
+	fmt.Println("This will happen")
+
+	defer func() {
+		if r := recovererr(); r != nil {
+			fmt.Println("recovered from ", r)
+		}
+	}()
+
+	errA(failer())
 
 	fmt.Println("This maybe happens")
 }
 
 func main() {
-	foo()
-	fmt.Println("This surely happens")
+	err0(foo)
+
+//	rts, str := "go","en"
+
+	rts, str := err2(bar,(true))
+
+	fmt.Println("This surely happens", str, rts)
 }
-*/
