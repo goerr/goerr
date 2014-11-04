@@ -6,6 +6,10 @@ import (
 	"os"
 )
 
+func massageAction(c *cli.Context) {
+	fmt.Println("massaging the codebase")
+}
+
 func hanAction(c *cli.Context) {
 	fmt.Println("added task han: ", c)
 }
@@ -108,6 +112,7 @@ func main() {
 	app.Flags = flagz
 	app.Commands = cmdz
 	app.Version = app_version
+	app.Action = massageAction
 
 	app.Run(os.Args)
 }
