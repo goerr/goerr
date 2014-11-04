@@ -26,12 +26,11 @@ added only before statements that can return in an error
 */
 // if i, he works like deferr
 
-func recovererr(a ...*[]interface{}) (r interface{}) {
+func Recover(a ...*[]interface{}) (r interface{}) {
 	r = recover()
 	if len(a) != 0 {
 	switch r.(type) {
 	case []interface{}:
-	fmt.Println("got panictype :")
 		for _, ptr := range a {
 			(*ptr) = r.([]interface{})
 		}
@@ -73,16 +72,18 @@ func toInterfaces(in []reflect.Value) []interface{} {
 	return out
 }
 
-func OR2(fun interface{}, args ...interface{}) (interface{},interface{}) {
+type Q interface{}
+
+func OR2(fun Q, args ...interface{}) (Q,Q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1]
 }
 
-func OR0(fun interface{}) {
+func OR0(fun Q) {
 	errvariadic(fun, []reflect.Value{})
 }
 
 func errvariadic(fun interface{}, vals []reflect.Value) (out []interface{}) {
-	defer recovererr(&out)
+	defer Recover(&out)
 	return toInterfaces(reflect.ValueOf(fun).Call(vals))
 }
