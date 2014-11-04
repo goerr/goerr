@@ -10,21 +10,27 @@ func hanAction(c *cli.Context) {
 	fmt.Println("added task han: ", c)
 }
 
+func delAction(c *cli.Context) {
+	fmt.Println("added task del: ", c)
+}
+
+func missingAction(c *cli.Context) {
+	//TODO
+	fmt.Println("TODO :)")
+}
+
 func main() {
 
 	// global level flags
 	flagz := []cli.Flag{
-		cli.BoolFlag{
-			Name:  "verbose",
-			Usage: "Show more output",
+		cli.StringFlag{
+			Name:  "e, " + error_file_name,
+			Usage: "Specify an alternate " + error_file_name +
+				" (default: " + error_file_name + ".go)",
 		},
 		cli.StringFlag{
-			Name:  "e, errfile",
-			Usage: "Specify an alternate err file (default: errfile.go)",
-		},
-		cli.StringFlag{
-			Name:  "p, project-name",
-			Usage: "Specify an alternate project name (default: directory name)",
+			Name:  "f, file-name",
+			Usage: "Operate on a single file",
 		},
 	}
 
@@ -61,26 +67,47 @@ func main() {
 				},
 			},
 			Usage:  "Create an empty errfile",
-			Action: hanAction,
+			Action: missingAction,
 		},
 		{
 			Name: "ls",
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:  "u",
+					Usage: "Unhandled errors only.",
+				},
+			},
+			Usage:  "List the handling of all errors",
+			Action: missingAction,
+		},
+		{
+			Name: "show",
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "f",
 					Usage: "Foo.",
 				},
 			},
-			Usage:  "List unhandled",
-			Action: hanAction,
+			Usage:  "Show handling related to a function",
+			Action: missingAction,
+		},
+		{
+			Name: "status",
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:  "f",
+					Usage: "Foo.",
+				},
+			},
+			Usage:  "Show cumulative statistics",
+			Action: missingAction,
 		},
 	}
 
 	app := cli.NewApp()
 	app.Flags = flagz
 	app.Commands = cmdz
-
-	fmt.Println("hello world")
+	app.Version = app_version
 
 	app.Run(os.Args)
 }
