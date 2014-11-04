@@ -3,7 +3,10 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/goerr/goerr"
+)
 
 var (
 	ErrGopher = fmt.Errorf("Gopher failed")
@@ -14,41 +17,9 @@ func successer() error {
 }
 
 func failer() error {
-	panic("yeah")
-
 	return ErrGopher
 }
 
-/*
-//Original foo with an unhandled error
-
-func foo() {
-	failer()
-
-	fmt.Println("This maybe happens")
-}
-*/
-
-/*
-//Handled foo
-func foo() {
-	err := failer()
-	if err != nil {
-		fmt.Println("Oh very")
-		return
-	}
-
-	fmt.Println("This maybe happens")
-}
-
-
-func main() {
-	foo()
-	fmt.Println("This surely happens")
-}
-*/
-
-//deleted bar
 func bar(i bool) (j string, k string) {
 	fmt.Println("Branching")
 
@@ -60,7 +31,6 @@ func bar(i bool) (j string, k string) {
 	return "hello","world"
 }
 
-//Deleted foo
 func foo() {
 
 	errA(successer())
@@ -68,7 +38,7 @@ func foo() {
 	fmt.Println("This will happen")
 
 	defer func() {
-		if r := X(recover()); r != nil {
+		if r := goerr.X(recover()); r != nil {
 			fmt.Println("recovered from ", r)
 		}
 	}()
@@ -79,9 +49,9 @@ func foo() {
 }
 
 func main() {
-	OR0(foo)
+	goerr.OR0(foo)
 
-	rts, str := OR2(bar,(true))
+	rts, str := goerr.OR2(bar,(true))
 
 	fmt.Println("This surely happens", str, rts)
 }

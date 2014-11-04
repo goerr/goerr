@@ -2,14 +2,19 @@ package main
 
 import (
 	"fmt"
+	. "github.com/goerr/goerr"
 )
 
 func errA(err error) {
-	fmt.Println("Oh very")
-//	err.Return()
+	if err != nil {
+		fmt.Println("Oh very")
+//		Return()
+	}
 }
 
 func errB(err error) {
-	fmt.Println("Oh snap")
-	err.Return("gopher","turtle")
+	if err != nil {
+		fmt.Println("Oh snap")
+		Return("gopher","turtle")
+	}
 }
