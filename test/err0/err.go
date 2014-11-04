@@ -8,13 +8,13 @@ import (
 func errA(err error) {
 	if err != nil {
 		fmt.Println("Oh very")
-//		Return()
+		//		Return()
 	}
 }
 
 func errB(err error) {
 	if err != nil {
 		fmt.Println("Oh snap")
-		Return("gopher","turtle")
+		Return("gopher", "turtle")
 	}
 }

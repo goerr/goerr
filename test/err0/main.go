@@ -28,7 +28,7 @@ func bar(i bool) (j string, k string) {
 	} else {
 		errB(failer())
 	}
-	return "hello","world"
+	return "hello", "world"
 }
 
 func foo() {
@@ -51,7 +51,7 @@ func foo() {
 func main() {
 	goerr.OR0(foo)
 
-	rts, str := goerr.OR2(bar,(false))
+	rts, str := goerr.OR2(bar, (false))
 
 	fmt.Println("This surely happens", str, rts)
 }

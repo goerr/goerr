@@ -4,12 +4,12 @@ import (
 	"reflect"
 )
 
-func XQZ(r interface{}) (interface{}) {
+func XQZ(r interface{}) interface{} {
 	switch r.(type) {
 	case panik:
-	return nil
+		return nil
 	default:
-	return r
+		return r
 	}
 }
 
@@ -46,11 +46,11 @@ type q interface{}
 // the return- panic struct
 type panik struct {
 	magic uint16
-	q []interface{}
+	q     []interface{}
 }
 
 // Returner for 2 return-valued functions
-func OR2(fun q, args ...interface{}) (q,q) {
+func OR2(fun q, args ...interface{}) (q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1]
 }
@@ -64,16 +64,16 @@ func OR0(fun q) {
 
 // internal variadic returner
 func errvariadic(fun interface{}, vals []reflect.Value) (out []interface{}) {
-	defer func(){
+	defer func() {
 		r := recover()
 		switch r.(type) {
 		case panik:
-		p := r.(panik)
-		out = p.q
+			p := r.(panik)
+			out = p.q
 		default:
-		if r != nil {
-			panic(r)
-		}
+			if r != nil {
+				panic(r)
+			}
 		}
 	}()
 	return toInterfaces(reflect.ValueOf(fun).Call(vals))
