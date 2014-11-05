@@ -25,6 +25,8 @@ func bar(i bool) (j string, k string) {
 
 	if i {
 		errB(successer())
+		{
+		}
 	} else {
 		errB(failer())
 	}
