@@ -338,13 +338,17 @@ func main() {
 	// global level flags
 	flagz := []cli.Flag{
 		cli.StringFlag{
-			Name: "e, " + error_file_name,
+			Name: "e",
 			Usage: "Specify an alternate " + error_file_name +
 				" (default: " + error_file_name + ".go)",
 		},
 		cli.StringFlag{
-			Name:  "f, file-name",
+			Name:  "f",
 			Usage: "Operate on a single file",
+		},
+		cli.StringFlag{
+			Name:  "o",
+			Usage: "Output to stdout. Use with f",
 		},
 	}
 
