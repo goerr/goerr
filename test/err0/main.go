@@ -38,12 +38,60 @@ func foo() {
 	errA(successer())
 
 	fmt.Println("This will happen")
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	errA(successer())
+
+	fmt.Println("This will happen")
+	{
+	}
 
 	defer func() {
 		if r := goerr.XQZ(recover()); r != nil {
 			fmt.Println("recovered from ", r)
 		}
 	}()
+
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
+	{
+	}
 
 	errA(failer())
 

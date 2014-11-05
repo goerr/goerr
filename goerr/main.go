@@ -36,6 +36,8 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 	var e = fmt.Errorf("Incorrect block node")
 	er = e
 
+	o := 0
+
 	switch ggg := node.(type) {
 	case *ast.BlockStmt:
 		bbb = ggg
@@ -62,9 +64,11 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 							if valuee != 0 {
 
 								er = nil
-								offs = append(offs, sssid)
+								offs = append(offs, sssid+o)
 								idz = append(idz, valuee)
 								rrr = append(rrr, foo)
+
+								o++
 							}
 
 						}
@@ -161,7 +165,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		_ = assignment
 		var put []ast.Stmt
 
-		spew.Dump("offz:$", len(offz))
+		//		spew.Dump("offz:$", len(offz))
 
 		for i := range offz {
 
