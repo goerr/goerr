@@ -44,7 +44,7 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
-					//			spew.Dump(nod)
+
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
 
@@ -103,14 +103,47 @@ func witch(node ast.Node) (*ast.CallExpr, *ast.Ident, *ast.Ident, error) {
 }
 
 type errf struct {
-	m      map[string]int
-	bodies []*ast.BlockStmt
+	m       map[string]int
+	bodies  []*ast.BlockStmt
+	eargtxt []string
 }
 
 func (e *errf) Visit(node ast.Node) ast.Visitor {
 
 	switch n := node.(type) {
 	case *ast.FuncDecl:
+
+		arglist := n.Type.Params.List
+
+		if len(arglist) != 1 {
+			fmt.Fprintln(os.Stderr, "TODO 2 args")
+			return e
+		}
+
+		switch errargt := interface{}(arglist[0].Type).(type) {
+		case *ast.Ident:
+			if errargt.Name != "error" {
+				fmt.Fprintln(os.Stderr, "TODO arg type not error")
+				return e
+			}
+		}
+
+		strerrp := ""
+
+		switch errargn := interface{}(arglist[0].Names).(type) {
+		case []*ast.Ident:
+			if len(errargn) != 1 {
+				fmt.Fprintln(os.Stderr, "TODO arg multiple names")
+				return e
+			}
+			strerrp = errargn[0].Name
+		}
+
+		if debag == 9 {
+			spew.Dump(strerrp)
+		}
+
+		e.eargtxt = append(e.eargtxt, strerrp)
 
 		str := n.Name.String()
 		//		spew.Dump(n.Body)
@@ -256,11 +289,6 @@ func hanAction(c *cli.Context) {
 	fsetc := token.NewFileSet()
 	fc, _ := parser.ParseFile(fsetc, codefile, nil, 0)
 	fe, _ := parser.ParseFile(fsete, errfile, nil, 0)
-
-	if debag == 9 {
-		spew.Dump(fc.Imports)
-
-	}
 
 	for _, s := range fc.Imports {
 		if s.Path.Value == "\"github.com/goerr/goerr\"" {
