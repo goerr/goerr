@@ -5,7 +5,7 @@ package main
 
 import (
 	"fmt"
-	. "github.com/goerr/goerr"
+	"github.com/goerr/goerr"
 )
 
 var (
