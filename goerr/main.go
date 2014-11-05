@@ -6,6 +6,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"go/ast"
 	"go/parser"
+	"go/printer"
 	"go/token"
 	//	"io/ioutil"
 	"os"
@@ -14,6 +15,7 @@ import (
 
 func i() {
 	spew.Dump(0)
+	printer.Fprint(os.Stdout, nil, nil)
 }
 
 func massageAction(c *cli.Context) {
@@ -27,75 +29,63 @@ type myfileinfo struct {
 
 type spewlord struct{}
 
-func (spewlord) Visit(node ast.Node) ast.Visitor {
-
-	var fun *ast.SelectorExpr
-	var funx *ast.Ident
-	var funsel *ast.Ident
+func witch(node ast.Node) (*ast.SelectorExpr, *ast.Ident, *ast.Ident, error) {
+	var e = fmt.Errorf("Incorrect call node")
 
 	switch n := node.(type) {
 	case *ast.CallExpr:
 
 		switch fun := n.Fun.(type) {
 		case *ast.SelectorExpr:
-			/*
-				switch funsel := fun.Sel.(type) {
-				case *ast.Ident:
-			*/
-
 			switch funsel := interface{}(fun.Sel).(type) {
 			case *ast.Ident:
 
 				switch funx := fun.X.(type) {
 				case *ast.Ident:
-
-					_ = fun
-					_ = funx
-					_ = funsel
-
-					spew.Dump(n, fun, funx, funsel)
-
-					//				}
+					return fun, funx, funsel, nil
 				}
+
 			}
+		case *ast.Ident:
+			return nil, nil, fun, nil
+
 		}
-
 	}
+	return nil, nil, nil, e
+}
 
+func (spewlord) Visit(node ast.Node) ast.Visitor {
+
+	fun, funx, funsel, err := witch(node)
 	_ = fun
 	_ = funx
 	_ = funsel
 
-	/*
-		if funx.Name == "goerr" {
-			if funsel.Name == "XQZ" {
-				fmt.Println("found recover wrapper")
-			}
-			if funsel.Name[:2] == "OR" {
-				fmt.Println("found return wrapper")
-			}
+	if err != nil {
+		return spewlord{}
+	}
 
+	h := make(map[string]bool)
+	h["errB"] = true
+	h["errA"] = true
+
+	spew.Dump(funsel)
+
+	if funx != nil && funx.Name == "goerr" {
+		if funsel.Name == "XQZ" {
+			fmt.Println("found recover wrapper")
 		}
-	*/
+		if funsel.Name[:2] == "OR" {
+			fmt.Println("found return wrapper")
+		}
 
-	/*
+	}
 
-		m := n
+	if h[funsel.Name] {
+		fmt.Println("found handler wrapper")
+	}
 
-	*/
-
-	/*
-		var efns map[string]bool
-
-		efns["errB"] = true
-		efns["errA"] = true
-	*/
-	//	if efns[node.Ident] {
-	//		fmt.Println("found cool node:")
-
-	//	}
-
-	return spewlord{}
+	return nil
 }
 
 func hanAction(c *cli.Context) {
@@ -139,10 +129,11 @@ func hanAction(c *cli.Context) {
 	_ = fc
 	_ = fe
 	for _, s := range fc.Decls {
-		//		spewlord{}.Visit(s)
-
 		ast.Walk(spewlord{}, s)
 	}
+
+	//	printer.Fprint(os.Stdout, fsetc, fc)
+
 	//	spew.Dump(fc.Imports)
 	//	spew.Dump(fc.Decls)
 	//	spew.Dump(fe.Decls)
