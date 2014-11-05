@@ -22,11 +22,6 @@ func massageAction(c *cli.Context) {
 	fmt.Println("massaging the codebase")
 }
 
-type myfileinfo struct {
-	is_goerr_import  bool
-	is_dotted_import bool
-}
-
 type spewlord struct {
 	f      func(string) int
 	bodies []*ast.BlockStmt
@@ -262,21 +257,17 @@ func hanAction(c *cli.Context) {
 	fc, _ := parser.ParseFile(fsetc, codefile, nil, 0)
 	fe, _ := parser.ParseFile(fsete, errfile, nil, 0)
 
-	var myc, mye myfileinfo
+	if debag == 9 {
+		spew.Dump(fc.Imports)
+
+	}
 
 	for _, s := range fc.Imports {
 		if s.Path.Value == "\"github.com/goerr/goerr\"" {
-			myc.is_goerr_import = true
-
-			if s.Name != nil && s.Name.Name == "." {
-				myc.is_dotted_import = true
-			}
-
+			s.Path.Value = ""
 		}
 	}
 
-	_ = myc
-	_ = mye
 	_ = fc
 	_ = fe
 
@@ -322,6 +313,17 @@ func delAction(c *cli.Context) {
 func missingAction(c *cli.Context) {
 	//TODO
 	fmt.Println("TODO :)")
+}
+
+func slicerm(baf *[]*ast.ImportSpec, n int) {
+	end := len(*baf) - 1
+	for i := range *baf {
+		if i < n || i == end {
+			continue
+		}
+		(*baf)[i] = (*baf)[i+1]
+	}
+	(*baf) = (*baf)[:end]
 }
 
 func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
