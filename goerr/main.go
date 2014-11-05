@@ -54,8 +54,13 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 						switch funnam := foo.Fun.(type) {
 						case *ast.Ident:
 							valuee := f(funnam.Name)
+							if debag == 7 {
+
+								spew.Dump("hello", funnam.Name, valuee)
+							}
+
 							if valuee != 0 {
-								//		spew.Dump("hello")
+
 								er = nil
 								offs = append(offs, sssid)
 								idz = append(idz, valuee)
@@ -109,10 +114,10 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 	case *ast.FuncDecl:
 
 		str := n.Name.String()
-		//		spew.Dump(n)
-		e.m[str] = len(e.bodies)
-
+		//		spew.Dump(n.Body)
 		e.bodies = append(e.bodies, n.Body)
+		//		spew.Dump("FOUND:" + str)
+		e.m[str] = len(e.bodies)
 
 	default:
 		return e
@@ -155,10 +160,16 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		_ = something
 		_ = assignment
 		var put []ast.Stmt
+
+		spew.Dump("offz:$", len(offz))
+
 		for i := range offz {
 
-			toput := ((*s).bodies)[offz[i]]
-
+			toput := ((*s).bodies)[i]
+			if debag == 1 {
+				spew.Dump(toput)
+				spew.Dump("**********$")
+			}
 			_ = i
 			put = append(put, toput)
 
@@ -206,14 +217,14 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		if funsel.Name == "XQZ" {
 			nnn.Args = nil
 			nnn.Fun = ast.NewIdent("recover")
-			return nil
+			return s
 		}
 		if funsel.Name[:2] == "OR" {
 			if len(nnn.Args) != 0 {
 				nnn.Fun = nnn.Args[0]
 				nnn.Args = nnn.Args[1:]
 			}
-			return nil
+			return s
 		}
 	}
 
