@@ -29,7 +29,48 @@ type myfileinfo struct {
 
 type spewlord struct{}
 
-func witch(node ast.Node) (*ast.SelectorExpr, *ast.Ident, *ast.Ident, error) {
+func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.BlockStmt, offs []int, idz []int, er error) {
+	var e = fmt.Errorf("Incorrect block node")
+	er = e
+
+	switch ggg := node.(type) {
+	case *ast.BlockStmt:
+		bbb = ggg
+		switch lll := interface{}(ggg.List).(type) {
+		case []ast.Stmt:
+			for sssid, sss := range lll {
+				_ = sssid
+				_ = sss
+
+				switch nod := sss.(type) {
+				case *ast.ExprStmt:
+					//			spew.Dump(nod)
+					switch foo := interface{}(nod.X).(type) {
+					case *ast.CallExpr:
+
+						switch funnam := foo.Fun.(type) {
+						case *ast.Ident:
+							valuee := f(funnam.Name)
+							if valuee != 0 {
+								//		spew.Dump("hello")
+								er = nil
+								offs = append(offs, sssid)
+								idz = append(idz, valuee)
+								rrr = append(rrr, foo)
+							}
+
+						}
+
+					}
+				}
+
+			}
+		}
+	}
+	return
+}
+
+func witch(node ast.Node) (*ast.CallExpr, *ast.Ident, *ast.Ident, error) {
 	var e = fmt.Errorf("Incorrect call node")
 
 	switch n := node.(type) {
@@ -42,12 +83,12 @@ func witch(node ast.Node) (*ast.SelectorExpr, *ast.Ident, *ast.Ident, error) {
 
 				switch funx := fun.X.(type) {
 				case *ast.Ident:
-					return fun, funx, funsel, nil
+					return n, funx, funsel, nil
 				}
 
 			}
 		case *ast.Ident:
-			return nil, nil, fun, nil
+			return n, nil, fun, nil
 
 		}
 	}
@@ -56,42 +97,94 @@ func witch(node ast.Node) (*ast.SelectorExpr, *ast.Ident, *ast.Ident, error) {
 
 func (spewlord) Visit(node ast.Node) ast.Visitor {
 
-	what := 0
+	var rewriter bool
 
-	fun, funx, funsel, err := witch(node)
-	_ = fun
-	_ = funx
-	_ = funsel
+	h := make(map[string]int)
+	h["errB"] = 1
+	h["errA"] = 2
 
+	funny := func(s string) int { return h[s] }
+
+	nnn, funx, funsel, err := witch(node)
 	if err != nil {
-		return spewlord{}
+		rewriter = true
+	}
+	rrr, bufflist, offz, idz, err2 := wesit(node, funny)
+	if err2 != nil {
+		if rewriter {
+			return spewlord{}
+		}
 	}
 
-	h := make(map[string]bool)
-	h["errB"] = true
-	h["errA"] = true
+	_ = rrr
+
+	if rewriter {
+		baff := &(bufflist.List)
+
+		if len(*baff) == 0 {
+			return nil
+		}
+
+		// first put together the statement "a = 42"
+		identA := ast.NewIdent("a")
+		fortyTwo := &ast.BasicLit{Kind: token.INT, Value: "42"}
+		assignment := &ast.AssignStmt{Lhs: []ast.Expr{identA}, Rhs: []ast.Expr{fortyTwo}}
+		nothing := []ast.Stmt(nil)
+		well := []ast.Stmt{assignment}
+		_ = well
+		something := &ast.IfStmt{Body: &ast.BlockStmt{Lbrace: 398, List: nothing, Rbrace: 402}}
+		_ = something
+		var put []ast.Stmt
+		for i := range offz {
+			_ = i
+			put = append(put, assignment)
+
+			var nargs *ast.CallExpr
+			nargs = rrr[i].Args[0].(*ast.CallExpr)
+
+			rrr[i].Fun = nargs.Fun
+			rrr[i].Args = nargs.Args
+
+			if debag == 1 {
+				spew.Dump("$$$$$$$$$$$")
+				spew.Dump(nargs)
+				spew.Dump("$********$")
+			}
+		}
+
+		sliceshift(baff, offz, put)
+		/*
+
+		*/
+		if debag == 1 {
+			for i := range offz {
+				_ = i
+				//		spew.Dump((*baff)[i])
+			}
+			spew.Dump("hello")
+			spew.Dump(offz)
+			spew.Dump(idz)
+			//			spew.Dump(baff)
+		}
+		return spewlord{}
+	}
 
 	if funx != nil && funx.Name == "goerr" {
 		if funsel.Name == "XQZ" {
-			what = 1
+			nnn.Args = nil
+			nnn.Fun = ast.NewIdent("recover")
+			return nil
 		}
 		if funsel.Name[:2] == "OR" {
-			what = 2
+			if len(nnn.Args) != 0 {
+				nnn.Fun = nnn.Args[0]
+				nnn.Args = nnn.Args[1:]
+			}
+			return nil
 		}
 	}
 
-	if h[funsel.Name] {
-		what = 3
-
-	}
-
-	if what == 0 {
-		return spewlord{}
-	}
-
-	spew.Dump(node)
-
-	return nil
+	return spewlord{}
 }
 
 func hanAction(c *cli.Context) {
@@ -137,11 +230,13 @@ func hanAction(c *cli.Context) {
 	for _, s := range fc.Decls {
 		ast.Walk(spewlord{}, s)
 	}
-
-	//	printer.Fprint(os.Stdout, fsetc, fc)
-
+	if debag == 2 {
+		printer.Fprint(os.Stdout, fsetc, fc)
+	}
 	//	spew.Dump(fc.Imports)
-	//	spew.Dump(fc.Decls)
+	if debag == 3 {
+		spew.Dump(fc.Decls)
+	}
 	//	spew.Dump(fe.Decls)
 }
 
@@ -154,8 +249,34 @@ func missingAction(c *cli.Context) {
 	fmt.Println("TODO :)")
 }
 
-func main() {
+func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
+	var out []ast.Stmt
+	o := 0
 
+	for i, j := range *baf {
+		out = append(out, j)
+		if len(offs) > 0 && (i+o) == offs[0] {
+			out = append(out, put[0])
+			offs = offs[1:]
+			put = put[1:]
+			o++
+		}
+	}
+
+	*baf = out
+}
+
+func main() {
+	/*
+		if debag == 1337 {
+			baf := []int{49868, 685498, 3218, 654, 6541, 6531, 486}
+			put := []int{0, 1}
+			where := []int{2, 4}
+			sliceshift(&baf, where, put)
+			spew.Dump(baf)
+			os.Exit(0)
+		}
+	*/
 	// global level flags
 	flagz := []cli.Flag{
 		cli.StringFlag{
