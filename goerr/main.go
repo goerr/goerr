@@ -236,7 +236,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 }
 
 func hanAction(c *cli.Context) {
-	fmt.Println("added task han: ", c.Command.Flags)
+	//	fmt.Println("added task han: ", c.Command.Flags)
 
 	//	spew.Dump(c.globalSet)
 
