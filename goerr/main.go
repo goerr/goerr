@@ -374,25 +374,25 @@ func main() {
 	// Commands
 	cmdz := []cli.Command{
 		{
-			Name: "add",
+			Name: "sep",
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "f",
 					Usage: "Foo.",
 				},
 			},
-			Usage:  "Handle errors in a separate errfile",
+			Usage:  "Separate errors handling to an errfile",
 			Action: hanAction,
 		},
 		{
-			Name: "rm",
+			Name: "merge",
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "f",
 					Usage: "Foo.",
 				},
 			},
-			Usage:  "Put handlers back, remove errfile",
+			Usage:  "Merge handlers back",
 			Action: hanAction,
 		},
 		{
