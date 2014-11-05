@@ -28,7 +28,8 @@ type myfileinfo struct {
 }
 
 type spewlord struct {
-	f func(string) int
+	f      func(string) int
+	bodies []*ast.BlockStmt
 }
 
 func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.BlockStmt, offs []int, idz []int, er error) {
@@ -97,7 +98,33 @@ func witch(node ast.Node) (*ast.CallExpr, *ast.Ident, *ast.Ident, error) {
 	return nil, nil, nil, e
 }
 
-func (s spewlord) Visit(node ast.Node) ast.Visitor {
+type errf struct {
+	m      map[string]int
+	bodies []*ast.BlockStmt
+}
+
+func (e *errf) Visit(node ast.Node) ast.Visitor {
+
+	switch n := node.(type) {
+	case *ast.FuncDecl:
+
+		str := n.Name.String()
+		//		spew.Dump(n)
+		e.m[str] = len(e.bodies)
+
+		e.bodies = append(e.bodies, n.Body)
+
+	default:
+		return e
+	}
+
+	if debag == 4 {
+		spew.Dump(node)
+	}
+	return e
+}
+
+func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 	var rewriter bool
 
@@ -117,10 +144,6 @@ func (s spewlord) Visit(node ast.Node) ast.Visitor {
 	if rewriter {
 		baff := &(bufflist.List)
 
-		if len(*baff) == 0 {
-			return nil
-		}
-
 		// first put together the statement "a = 42"
 		identA := ast.NewIdent("a")
 		fortyTwo := &ast.BasicLit{Kind: token.INT, Value: "42"}
@@ -130,21 +153,35 @@ func (s spewlord) Visit(node ast.Node) ast.Visitor {
 		_ = well
 		something := &ast.IfStmt{Body: &ast.BlockStmt{Lbrace: 398, List: nothing, Rbrace: 402}}
 		_ = something
+		_ = assignment
 		var put []ast.Stmt
 		for i := range offz {
+
+			toput := ((*s).bodies)[offz[i]]
+
 			_ = i
-			put = append(put, assignment)
+			put = append(put, toput)
 
 			var nargs *ast.CallExpr
 			nargs = rrr[i].Args[0].(*ast.CallExpr)
 
-			rrr[i].Fun = nargs.Fun
-			rrr[i].Args = nargs.Args
-
 			if debag == 1 {
+				spew.Dump(rrr[i])
 				spew.Dump("$$$$$$$$$$$")
 				spew.Dump(nargs)
 				spew.Dump("$********$")
+			}
+
+			rrr[i].Fun = nargs.Fun
+			rrr[i].Args = nargs.Args
+			rrr[i].Ellipsis = nargs.Ellipsis
+			rrr[i].Lparen = nargs.Lparen
+			rrr[i].Rparen = nargs.Rparen
+
+			if debag == 1 {
+				spew.Dump(rrr[i])
+				spew.Dump("@@@@@@@@@@@@@@")
+
 			}
 		}
 
@@ -224,15 +261,18 @@ func hanAction(c *cli.Context) {
 	_ = fc
 	_ = fe
 
-	h := make(map[string]int)
-	h["errB"] = 1
-	h["errA"] = 2
+	eh := errf{m: make(map[string]int)}
 
-	funny := func(s string) int { return h[s] }
+	for _, s := range fe.Decls {
+		ast.Walk(&eh, s)
+	}
+
+	funny := func(s string) int { return eh.m[s] }
 
 	for _, s := range fc.Decls {
-		ast.Walk(spewlord{f: funny}, s)
+		ast.Walk(&spewlord{f: funny, bodies: eh.bodies}, s)
 	}
+
 	if debag == 2 {
 		printer.Fprint(os.Stdout, fsetc, fc)
 	}
