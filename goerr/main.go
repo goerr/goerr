@@ -27,7 +27,9 @@ type myfileinfo struct {
 	is_dotted_import bool
 }
 
-type spewlord struct{}
+type spewlord struct {
+	f func(string) int
+}
 
 func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.BlockStmt, offs []int, idz []int, er error) {
 	var e = fmt.Errorf("Incorrect block node")
@@ -95,24 +97,18 @@ func witch(node ast.Node) (*ast.CallExpr, *ast.Ident, *ast.Ident, error) {
 	return nil, nil, nil, e
 }
 
-func (spewlord) Visit(node ast.Node) ast.Visitor {
+func (s spewlord) Visit(node ast.Node) ast.Visitor {
 
 	var rewriter bool
-
-	h := make(map[string]int)
-	h["errB"] = 1
-	h["errA"] = 2
-
-	funny := func(s string) int { return h[s] }
 
 	nnn, funx, funsel, err := witch(node)
 	if err != nil {
 		rewriter = true
 	}
-	rrr, bufflist, offz, idz, err2 := wesit(node, funny)
+	rrr, bufflist, offz, idz, err2 := wesit(node, s.f)
 	if err2 != nil {
 		if rewriter {
-			return spewlord{}
+			return s
 		}
 	}
 
@@ -166,7 +162,7 @@ func (spewlord) Visit(node ast.Node) ast.Visitor {
 			spew.Dump(idz)
 			//			spew.Dump(baff)
 		}
-		return spewlord{}
+		return s
 	}
 
 	if funx != nil && funx.Name == "goerr" {
@@ -184,7 +180,7 @@ func (spewlord) Visit(node ast.Node) ast.Visitor {
 		}
 	}
 
-	return spewlord{}
+	return s
 }
 
 func hanAction(c *cli.Context) {
@@ -227,8 +223,15 @@ func hanAction(c *cli.Context) {
 	_ = mye
 	_ = fc
 	_ = fe
+
+	h := make(map[string]int)
+	h["errB"] = 1
+	h["errA"] = 2
+
+	funny := func(s string) int { return h[s] }
+
 	for _, s := range fc.Decls {
-		ast.Walk(spewlord{}, s)
+		ast.Walk(spewlord{f: funny}, s)
 	}
 	if debag == 2 {
 		printer.Fprint(os.Stdout, fsetc, fc)
