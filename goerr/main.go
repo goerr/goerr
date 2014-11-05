@@ -351,25 +351,25 @@ func main() {
 	// Commands
 	cmdz := []cli.Command{
 		{
-			Name: "han",
+			Name: "add",
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "f",
 					Usage: "Foo.",
 				},
 			},
-			Usage:  "Handle errors in place",
+			Usage:  "Handle errors in a separate errfile",
 			Action: hanAction,
 		},
 		{
-			Name: "del",
+			Name: "rm",
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "f",
 					Usage: "Foo.",
 				},
 			},
-			Usage:  "Handle errors in errfile",
+			Usage:  "Put handlers back, remove errfile",
 			Action: hanAction,
 		},
 		{
