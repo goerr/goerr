@@ -165,7 +165,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 		for i := range offz {
 
-			toput := ((*s).bodies)[i]
+			toput := ((*s).bodies)[idz[i]-1]
 			if debag == 1 {
 				spew.Dump(toput)
 				spew.Dump("**********$")
