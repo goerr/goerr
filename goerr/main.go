@@ -56,6 +56,8 @@ func witch(node ast.Node) (*ast.SelectorExpr, *ast.Ident, *ast.Ident, error) {
 
 func (spewlord) Visit(node ast.Node) ast.Visitor {
 
+	what := 0
+
 	fun, funx, funsel, err := witch(node)
 	_ = fun
 	_ = funx
@@ -69,21 +71,25 @@ func (spewlord) Visit(node ast.Node) ast.Visitor {
 	h["errB"] = true
 	h["errA"] = true
 
-	spew.Dump(funsel)
-
 	if funx != nil && funx.Name == "goerr" {
 		if funsel.Name == "XQZ" {
-			fmt.Println("found recover wrapper")
+			what = 1
 		}
 		if funsel.Name[:2] == "OR" {
-			fmt.Println("found return wrapper")
+			what = 2
 		}
-
 	}
 
 	if h[funsel.Name] {
-		fmt.Println("found handler wrapper")
+		what = 3
+
 	}
+
+	if what == 0 {
+		return spewlord{}
+	}
+
+	spew.Dump(node)
 
 	return nil
 }
