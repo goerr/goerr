@@ -243,6 +243,10 @@ func hanAction(c *cli.Context) {
 	codefile := c.GlobalString("f")
 
 	errfile := c.GlobalString("e")
+
+	need_use_stdout := c.GlobalString("o")
+
+	use_stdout := codefile == "" && need_use_stdout != ""
 	/*
 		errf, _ := os.Open(errfile)
 		defer errf.Close()
@@ -288,14 +292,27 @@ func hanAction(c *cli.Context) {
 		ast.Walk(&spewlord{f: funny, bodies: eh.bodies}, s)
 	}
 
+	var outf *os.File
+
+	if use_stdout {
+		outf = os.Stdout
+	} else {
+		outf, _ = os.Create(codefile)
+	}
+
+	printer.Fprint(outf, fsetc, fc)
+	outf.Sync()
+	outf.Close()
+
 	if debag == 2 {
-		printer.Fprint(os.Stdout, fsetc, fc)
+
 	}
 	//	spew.Dump(fc.Imports)
 	if debag == 3 {
 		spew.Dump(fc.Decls)
 	}
 	//	spew.Dump(fe.Decls)
+
 }
 
 func delAction(c *cli.Context) {

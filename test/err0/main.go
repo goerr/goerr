@@ -1,6 +1,3 @@
-// this program contains a bug. the Println error is unhandled.
-//--okey but that would be another example
-
 package main
 
 import (
