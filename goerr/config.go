@@ -3,7 +3,7 @@ package main
 const (
 	error_file_name = "errfile"
 	app_version     = "0.0.0"
-	debag           = 4
+	debag           = 0
 
 	//4 pridavac toho =
 	//6 LHS := putter
