@@ -5,8 +5,8 @@ strip / add error handling to a go file
 
 [![GoDoc](https://godoc.org/github.com/goerr/goerr?status.svg)](https://godoc.org/github.com/goerr/goerr)
 
-[Getting started](github.com/goerr/goerr/wiki/Getting-started)
-
+[Getting started](https://github.com/goerr/goerr/wiki/Getting-started)
+[Todo](https://github.com/goerr/goerr/wiki/TODO)
 
 CI
 ==
