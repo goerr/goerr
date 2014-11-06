@@ -4,6 +4,9 @@ import (
 	"reflect"
 )
 
+//The function NoOp doesn't do anything
+func NoOp() {}
+
 func XQZ(r interface{}) interface{} {
 	switch r.(type) {
 	case panik:
