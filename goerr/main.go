@@ -453,7 +453,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 	}
 
 	if funx != nil && funx.Name == "goerr" {
-		if funsel.Name == "XQZ" {
+		if funsel.Name == "RecoWrap" {
 			nnn.Args = nil
 			nnn.Fun = ast.NewIdent("recover")
 			return s

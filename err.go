@@ -7,7 +7,9 @@ import (
 //The function NoOp doesn't do anything
 func NoOp() {}
 
-func XQZ(r interface{}) interface{} {
+//The function RecoWrap is used in the clients code to wrap all calls recover to
+//avoid recovering from goerr internal errors
+func RecoWrap(r interface{}) interface{} {
 	switch r.(type) {
 	case panik:
 		return nil
