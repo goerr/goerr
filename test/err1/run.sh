@@ -1,5 +1,8 @@
 #!/bin/sh
 
+cd ../../goerr/
+go build
+cd ../test/err1/
 ../../goerr/goerr -f main.go -e err.go merge
 rm err.go
 go fmt main.go

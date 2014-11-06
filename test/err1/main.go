@@ -26,6 +26,8 @@ func try() {
 	errPASS1(pass1())
 	errPASS2(pass2())
 
+	fmt.Println("begin")
+
 	u := errPASS0(pass0())
 	v := errPASS1(pass1())
 	w := errPASS2(pass2())

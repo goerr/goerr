@@ -38,9 +38,15 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 		bbb = ggg
 		switch lll := interface{}(ggg.List).(type) {
 		case []ast.Stmt:
+
 			for sssid, sss := range lll {
 				_ = sssid
 				_ = sss
+
+				if debag == 1 {
+					spew.Dump("????????????????")
+					spew.Dump(sss)
+				}
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
@@ -119,14 +125,14 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 
 		for i := range arglist {
 
-		switch errargt := interface{}(arglist[i].Type).(type) {
-		case *ast.Ident:
-			if errargt.Name == "error" {
-//				fmt.Fprintln(os.Stderr, "TODO arg type IS error")
-				errori = i
-				break
+			switch errargt := interface{}(arglist[i].Type).(type) {
+			case *ast.Ident:
+				if errargt.Name == "error" {
+					//				fmt.Fprintln(os.Stderr, "TODO arg type IS error")
+					errori = i
+					break
+				}
 			}
-		}
 
 		}
 
@@ -186,6 +192,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 	_ = rrr
 
 	if rewriter {
+
 		baff := &(bufflist.List)
 
 		// first put together the statement "a = 42"
