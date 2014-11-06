@@ -330,7 +330,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 				if !stek[i].op {
 					spew.Dump("we must put vars because:")
-					varz["sdgfs"] = true
+					varz[tput.Name] = true
 				}
 
 				if debag == 4 {
@@ -375,9 +375,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 				*(stek[i].root) = &assignment
 
-
-
-
 				if debag == 4 {
 					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 					//spew.Dump(stek[i].root)
@@ -397,16 +394,16 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		}
 
 		if len(varz) > 0 {
-			newlhs := []ast.Expr{}
+			idents := []*ast.Ident{}
 
 			for item := range varz {
-				newlhs = append(newlhs, ast.NewIdent(item))
+				idents = append(idents, ast.NewIdent(item))
 			}
 
-//			rspec := ast.TypeSpec{Name: ast.NewIdent("error")}
+			//			rspec := ast.TypeSpec{Name: ast.NewIdent("error")}
 			lspec := ast.ValueSpec{
-				Names: []*ast.Ident{ast.NewIdent("a"), ast.NewIdent("b")},
-				Type: ast.NewIdent("error")}
+				Names: idents,
+				Type:  ast.NewIdent("error")}
 
 			declaration := ast.GenDecl{
 				Doc:    nil,
