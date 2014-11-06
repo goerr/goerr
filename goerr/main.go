@@ -115,25 +115,32 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 
 		arglist := n.Type.Params.List
 
-		if len(arglist) != 1 {
-			fmt.Fprintln(os.Stderr, "TODO 2 args")
-			return e
+		errori := -1
+
+		for i := range arglist {
+
+		switch errargt := interface{}(arglist[i].Type).(type) {
+		case *ast.Ident:
+			if errargt.Name == "error" {
+//				fmt.Fprintln(os.Stderr, "TODO arg type IS error")
+				errori = i
+				break
+			}
 		}
 
-		switch errargt := interface{}(arglist[0].Type).(type) {
-		case *ast.Ident:
-			if errargt.Name != "error" {
-				fmt.Fprintln(os.Stderr, "TODO arg type not error")
-				return e
-			}
+		}
+
+		if errori == -1 {
+			fmt.Fprintln(os.Stderr, "TODO no error arg", errori)
+			return e
 		}
 
 		strerrp := ""
 
-		switch errargn := interface{}(arglist[0].Names).(type) {
+		switch errargn := interface{}(arglist[errori].Names).(type) {
 		case []*ast.Ident:
 			if len(errargn) != 1 {
-				fmt.Fprintln(os.Stderr, "TODO arg multiple names")
+				fmt.Fprintln(os.Stderr, "TODO arg multiple names?")
 				return e
 			}
 			strerrp = errargn[0].Name

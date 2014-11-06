@@ -3,7 +3,7 @@ package main
 const (
 	error_file_name = "errfile"
 	app_version     = "0.0.0"
-	debag           = 9
+	debag           = 0
 
 	//9 import debug
 	//7 debug of that parser
