@@ -4,11 +4,10 @@ import (
 	"reflect"
 )
 
-//The function NoOp doesn't do anything
-func NoOp() {}
-
 //The function RecoWrap is used in the clients code to wrap all calls recover to
-//avoid recovering from goerr internal errors
+//avoid recovering goerr internal panic by the client's code
+//example: RecoWrap(recover())
+//Elsewhere it doesn't do anything, you can delete it
 func RecoWrap(r interface{}) interface{} {
 	switch r.(type) {
 	case panik:
@@ -54,10 +53,58 @@ type panik struct {
 	q     []interface{}
 }
 
+// Returner for 9 return-valued functions
+func OR9(fun q, args ...interface{}) (q, q, q, q, q, q, q, q, q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0], o[1], o[2], o[3], o[4], o[5], o[6], o[7], o[8]
+}
+
+// Returner for 8 return-valued functions
+func OR8(fun q, args ...interface{}) (q, q, q, q, q, q, q, q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0], o[1], o[2], o[3], o[4], o[5], o[6], o[7]
+}
+
+// Returner for 7 return-valued functions
+func OR7(fun q, args ...interface{}) (q, q, q, q, q, q, q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0], o[1], o[2], o[3], o[4], o[5], o[6]
+}
+
+// Returner for 6 return-valued functions
+func OR6(fun q, args ...interface{}) (q, q, q, q, q, q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0], o[1], o[2], o[3], o[4], o[5]
+}
+
+// Returner for 5 return-valued functions
+func OR5(fun q, args ...interface{}) (q, q, q, q, q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0], o[1], o[2], o[3], o[4]
+}
+
+// Returner for 4 return-valued functions
+func OR4(fun q, args ...interface{}) (q, q, q, q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0], o[1], o[2], o[3]
+}
+
+// Returner for 3 return-valued functions
+func OR3(fun q, args ...interface{}) (q, q, q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0], o[1], o[2]
+}
+
 // Returner for 2 return-valued functions
 func OR2(fun q, args ...interface{}) (q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1]
+}
+
+// Returner for 1 return-valued functions
+func OR1(fun q, args ...interface{}) (q) {
+	o := errvariadic(fun, toValues(args))
+	return o[0]
 }
 
 // Returner for 0 return-valued functions
