@@ -497,15 +497,15 @@ func main() {
 	// Commands
 	cmdz := []cli.Command{
 		{
-			Name: "sep",
+			Name: "separate",
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "f",
 					Usage: "Foo.",
 				},
 			},
-			Usage:  "Separate errors handling to an errfile",
-			Action: hanAction,
+			Usage:  "Separate splits and strips errors handling",
+			Action: missingAction,
 		},
 		{
 			Name: "merge",
@@ -517,6 +517,28 @@ func main() {
 			},
 			Usage:  "Merge handlers back",
 			Action: hanAction,
+		},
+		{
+			Name: "split",
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:  "f",
+					Usage: "Foo.",
+				},
+			},
+			Usage:  "Split off the current error handling to an errfile",
+			Action: missingAction,
+		},
+		{
+			Name: "strip",
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:  "f",
+					Usage: "Foo.",
+				},
+			},
+			Usage:  "Strip off the error handling from the client code",
+			Action: missingAction,
 		},
 		{
 			Name: "init",
