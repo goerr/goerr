@@ -32,11 +32,11 @@ func try() {
 	_, v := errPASS1(pass1())
 	w, _ := errPASS2(pass2())
 
-	a, b := errPASS0(pass0())
+	m, n := errPASS0(pass0())
 	p, q := errPASS1(pass1())
 	x, y := errPASS2(pass2())
 
-	fmt.Println(a, b, p, q, x, y, u, v, w)
+	fmt.Println(m, n, p, q, x, y, u, v, w)
 }
 
 func main() {
