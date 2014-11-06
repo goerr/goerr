@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-//The function RecoWrap is used in the clients code to wrap all calls recover to
+//RecoWrap is used in the clients code to wrap all calls recover to
 //avoid recovering goerr internal panic by the client's code, for example:
 //RecoWrap(recover());.
 //Elsewhere, it doesn't do anything, you can delete it
@@ -17,7 +17,7 @@ func RecoWrap(r interface{}) interface{} {
 	}
 }
 
-// The function Return is called from the error handling functions
+// Return is called from the error handling functions
 func Return(a ...interface{}) {
 	panic(panik{0xDEAD, a})
 }
@@ -53,61 +53,61 @@ type panik struct {
 	q     []interface{}
 }
 
-// Returner for 9 return-valued functions
+// OR9 is a returner for 9 return-valued functions
 func OR9(fun q, args ...interface{}) (q, q, q, q, q, q, q, q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1], o[2], o[3], o[4], o[5], o[6], o[7], o[8]
 }
 
-// Returner for 8 return-valued functions
+// OR8 is a returner for 8 return-valued functions
 func OR8(fun q, args ...interface{}) (q, q, q, q, q, q, q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1], o[2], o[3], o[4], o[5], o[6], o[7]
 }
 
-// Returner for 7 return-valued functions
+// OR7 is a returner for 7 return-valued functions
 func OR7(fun q, args ...interface{}) (q, q, q, q, q, q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1], o[2], o[3], o[4], o[5], o[6]
 }
 
-// Returner for 6 return-valued functions
+// OR6 is a returner for 6 return-valued functions
 func OR6(fun q, args ...interface{}) (q, q, q, q, q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1], o[2], o[3], o[4], o[5]
 }
 
-// Returner for 5 return-valued functions
+// OR5 is a returner for 5 return-valued functions
 func OR5(fun q, args ...interface{}) (q, q, q, q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1], o[2], o[3], o[4]
 }
 
-// Returner for 4 return-valued functions
+// OR4 is a returner for 4 return-valued functions
 func OR4(fun q, args ...interface{}) (q, q, q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1], o[2], o[3]
 }
 
-// Returner for 3 return-valued functions
+// OR3 is a returner for 3 return-valued functions
 func OR3(fun q, args ...interface{}) (q, q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1], o[2]
 }
 
-// Returner for 2 return-valued functions
+// OR2 is a returner for 2 return-valued functions
 func OR2(fun q, args ...interface{}) (q, q) {
 	o := errvariadic(fun, toValues(args))
 	return o[0], o[1]
 }
 
-// Returner for 1 return-valued functions
+// OR1 is a returner for 1 return-valued functions
 func OR1(fun q, args ...interface{}) q {
 	o := errvariadic(fun, toValues(args))
 	return o[0]
 }
 
-//Returner for 0 return-valued functions.
+//OR0 is a returner for 0 return-valued functions.
 //Every function that contains
 //wrappers who call Return(N), must be wrapped in a matching returner
 //to obtain N return values. Otherwise, you get a panic from the Return.
