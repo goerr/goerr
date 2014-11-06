@@ -11,7 +11,7 @@ import (
 )
 
 func massageAction(c *cli.Context) {
-	fmt.Println("TODO :)")
+	fmt.Fprintln(os.Stderr, "TODO :)")
 }
 
 type spewlord struct {
@@ -78,7 +78,7 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 					lhs := &nod.Lhs
 
 					if s != ":=" && s != "=" {
-						fmt.Dump("!operator?" + s)
+						fmt.Fprintln(os.Stderr, "!operator?" + s)
 					}
 
 					op := s == "="
@@ -421,7 +421,7 @@ func hanAction(c *cli.Context) {
 }
 
 func missingAction(c *cli.Context) {
-	fmt.Println("TODO :)")
+	fmt.Fprintln(os.Stderr, "TODO :)")
 }
 
 func slicerm(baf *[]*ast.ImportSpec, n int) {
