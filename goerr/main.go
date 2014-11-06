@@ -193,7 +193,7 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 
 						}
 
-						if funx.Name == "RecoWrap" {
+						if funx.Name == "XQZ" {
 
 							n.List[in] = &ast.EmptyStmt{}
 
