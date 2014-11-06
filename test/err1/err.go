@@ -11,7 +11,7 @@ func errPASS0(a error, b string, c int) (string, int) {
 	}
 
 	return b, c
-	Return()
+	Return(1, 2, 3, 4)
 	return b, c
 }
 
