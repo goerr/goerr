@@ -78,7 +78,7 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 					lhs := &nod.Lhs
 
 					if s != ":=" && s != "=" {
-						fmt.Fprintln(os.Stderr, "!operator?" + s)
+						fmt.Fprintln(os.Stderr, "!operator?"+s)
 					}
 
 					op := s == "="
@@ -240,9 +240,9 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		_ = something
 		_ = assignment
 
-		put := []ast.Stmt {&ast.EmptyStmt{}}
+		put := []ast.Stmt{&ast.EmptyStmt{}}
 
-		offz := []int {0}
+		offz := []int{0}
 		varz := make(map[string]bool)
 
 		for i := range stek {
@@ -257,14 +257,11 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			var nargs *ast.CallExpr
 			nargs = stek[i].rrr.Args[0].(*ast.CallExpr)
 
-
 			stek[i].rrr.Fun = nargs.Fun
 			stek[i].rrr.Args = nargs.Args
 			stek[i].rrr.Ellipsis = nargs.Ellipsis
 			stek[i].rrr.Lparen = nargs.Lparen
 			stek[i].rrr.Rparen = nargs.Rparen
-
-
 
 			tput := ((*s).eargtxt)[stek[i].idz-1]
 			puttoff := ((*s).eargoff)[stek[i].idz-1]
@@ -275,14 +272,12 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				if stek[i].op {
 
 					varz[tput.Name] = true
-				} 
+				}
 
 				_ = tput
 				_ = puttoff
 
 				argsliceshiftone(stek[i].lhs, puttoff, puttot, tput, ast.NewIdent("_"))
-
-
 
 			} else {
 
@@ -309,7 +304,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				idents = append(idents, ast.NewIdent(item))
 			}
 
-
 			lspec := ast.ValueSpec{
 				Names: idents,
 				Type:  ast.NewIdent("error")}
@@ -327,7 +321,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			smt := ast.DeclStmt{Decl: &declaration}
 
 			hhh := []ast.Stmt{&smt}
-
 
 			for i := range offz {
 				offz[i]++
@@ -417,7 +410,6 @@ func hanAction(c *cli.Context) {
 	outf.Sync()
 	outf.Close()
 
-
 }
 
 func missingAction(c *cli.Context) {
@@ -461,7 +453,7 @@ func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
 	o := 0
 
 	for i, j := range *baf {
-		if (i+o) == offs[0] {
+		if (i + o) == offs[0] {
 			out = append(out, put[0])
 			offs = offs[1:]
 			put = put[1:]

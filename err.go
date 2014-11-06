@@ -102,7 +102,7 @@ func OR2(fun q, args ...interface{}) (q, q) {
 }
 
 // Returner for 1 return-valued functions
-func OR1(fun q, args ...interface{}) (q) {
+func OR1(fun q, args ...interface{}) q {
 	o := errvariadic(fun, toValues(args))
 	return o[0]
 }
