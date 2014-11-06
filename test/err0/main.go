@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/goerr/goerr"
 )
 
 var (
@@ -20,118 +21,47 @@ func bar(i bool) (j string, k string) {
 	fmt.Println("Branching")
 
 	if i {
-		successer()
-		{
-			if err != nil {
-				fmt.
-					Println("Oh snap")
-				Return("gopher", "turtle")
-			}
-		}
-
+		errB(successer())
 		{
 		}
 	} else {
-		failer()
-		{
-			if err != nil {
-				fmt.
-					Println("Oh snap")
-				Return("gopher", "turtle")
-			}
-		}
-
+		errB(failer())
 	}
 	return "hello", "world"
 }
 
 func foo() {
 
-	successer()
-	{
-		if err != nil {
-			fmt.
-				Println("Oh very")
-		}
-	}
+	errA(successer())
 
 	fmt.Println("This will happen")
 	{
 	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	successer()
-	{
-		if err != nil {
-			fmt.
-				Println("Oh very")
-		}
-	}
+
+	errA(successer())
 
 	fmt.Println("This will happen")
 	{
 	}
 
 	defer func() {
-		if r := recover(); r != nil {
+		if r := goerr.XQZ(recover()); r != nil {
 			fmt.Println("recovered from ", r)
 		}
 	}()
 
 	{
 	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
-	{
-	}
 
-	failer()
-	{
-		if err != nil {
-			fmt.
-				Println("Oh very")
-		}
-	}
+	errA(failer())
 
 	fmt.Println("This maybe happens")
 }
 
 func main() {
-	foo()
+	goerr.OR0(foo)
 
-	rts, str := bar((false))
+	rts, str := goerr.OR2(bar, (false))
 
 	fmt.Println("This surely happens", str, rts)
 }
