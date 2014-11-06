@@ -1,5 +1,5 @@
-goerr
-=====
+goerr 0.1
+=========
 
 strip / add error handling to a go file
 
