@@ -271,17 +271,18 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		something := &ast.IfStmt{Body: &ast.BlockStmt{Lbrace: 398, List: nothing, Rbrace: 402}}
 		_ = something
 		_ = assignment
-		var put []ast.Stmt
+
+		put := []ast.Stmt {&ast.EmptyStmt{}}
 
 		//		spew.Dump("offz:$", len(offz))
 
-		var offz []int
+		offz := []int {0}
 
 		varz := make(map[string]bool)
 
 		for i := range stek {
 
-			offz = append(offz, stek[i].off)
+			offz = append(offz, stek[i].off+1)
 
 			toput := ((*s).bodies)[stek[i].idz-1]
 			if debag == 18 {
@@ -421,7 +422,16 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			spew.Dump(hhh)
 
-			sliceshift(baff, []int{0}, hhh)
+			for i := range offz {
+				offz[i]++
+			}
+
+			offz[0] = 0
+			put[0] = &smt
+
+		} else {
+			offz = offz[1:]
+			put = put[1:]
 		}
 
 		sliceshift(baff, offz, put)
@@ -581,13 +591,13 @@ func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
 	o := 0
 
 	for i, j := range *baf {
-		out = append(out, j)
 		if len(offs) > 0 && (i+o) == offs[0] {
 			out = append(out, put[0])
 			offs = offs[1:]
 			put = put[1:]
 			o++
 		}
+		out = append(out, j)
 	}
 
 	*baf = out
