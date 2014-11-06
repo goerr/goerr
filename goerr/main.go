@@ -37,13 +37,13 @@ func callmanage(foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o 
 	switch funnam := foo.Fun.(type) {
 	case *ast.Ident:
 		valuee := f(funnam.Name)
-		if debag == 8 {
+		if debag == 31 {
 
 			spew.Dump("hello", funnam.Name, valuee)
 		}
 
 		if valuee != 0 {
-			(*st) = append(*st, item{off: sssid+*o, idz: valuee, rrr: foo})
+			(*st) = append(*st, item{off: sssid + *o, idz: valuee, rrr: foo})
 			(*e) = nil
 			(*o)++
 		}
@@ -67,7 +67,7 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 				_ = sssid
 				_ = sss
 
-				if debag == 8 {
+				if debag == 31 {
 					spew.Dump("????????????????")
 					spew.Dump(sssid)
 					//					spew.Dump(sss)
@@ -84,7 +84,7 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 
 				case *ast.AssignStmt:
 
-					if debag == 8 {
+					if debag == 31 {
 						spew.Dump("!!!!!!!!!!??")
 						spew.Dump(nod.Rhs[0])
 
@@ -172,7 +172,7 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 			strerrp = errargn[0].Name
 		}
 
-		if debag == 9 {
+		if debag == 31 {
 			spew.Dump(strerrp)
 		}
 
@@ -184,7 +184,33 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 		//		spew.Dump("FOUND:" + str)
 		e.m[str] = len(e.bodies)
 
+	case *ast.BlockStmt:
+
+		for in, nod := range n.List {
+
+			switch no := nod.(type) {
+			case *ast.ReturnStmt:
+
+				n.List[in] = &ast.EmptyStmt{}
+
+				if debag == 8 {
+					spew.Dump("????????????????")
+					spew.Dump(no)
+
+				}
+
+			}
+
+		}
+
 	default:
+/*
+				if debag == 8 {
+					spew.Dump("????????????????")
+					spew.Dump(n)
+
+				}
+*/
 		return e
 	}
 
