@@ -43,13 +43,16 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 				_ = sssid
 				_ = sss
 
-				if debag == 1 {
+				if debag == 8 {
 					spew.Dump("????????????????")
-					spew.Dump(sss)
+					spew.Dump(sssid)
+//					spew.Dump(sss)
 				}
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
+
+
 
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
@@ -57,7 +60,7 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 						switch funnam := foo.Fun.(type) {
 						case *ast.Ident:
 							valuee := f(funnam.Name)
-							if debag == 7 {
+							if debag == 8 {
 
 								spew.Dump("hello", funnam.Name, valuee)
 							}
@@ -75,6 +78,13 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 						}
 
 					}
+
+				case *ast.AssignStmt:
+
+				if debag == 8 {
+					spew.Dump("!!!!!!!!!!??")
+					spew.Dump(nod)
+				}
 				}
 
 			}
@@ -251,9 +261,9 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				_ = i
 				//		spew.Dump((*baff)[i])
 			}
-			spew.Dump("hello")
-			spew.Dump(offz)
-			spew.Dump(idz)
+//			spew.Dump("hello")
+//			spew.Dump(offz)
+//			spew.Dump(idz)
 			//			spew.Dump(baff)
 		}
 		return s
