@@ -5,9 +5,9 @@ import (
 )
 
 //The function RecoWrap is used in the clients code to wrap all calls recover to
-//avoid recovering goerr internal panic by the client's code
-//example: RecoWrap(recover())
-//Elsewhere it doesn't do anything, you can delete it
+//avoid recovering goerr internal panic by the client's code, for example:
+//RecoWrap(recover());.
+//Elsewhere, it doesn't do anything, you can delete it
 func RecoWrap(r interface{}) interface{} {
 	switch r.(type) {
 	case panik:
@@ -107,9 +107,10 @@ func OR1(fun q, args ...interface{}) (q) {
 	return o[0]
 }
 
-// Returner for 0 return-valued functions
-// Returners should wrap in the client's code every function call, that contains
-// hidden-error mode error handling
+//Returner for 0 return-valued functions.
+//Every function that contains
+//wrappers who call Return(N), must be wrapped in a matching returner
+//to obtain N return values. Otherwise, you get a panic from the Return.
 func OR0(fun q) {
 	errvariadic(fun, []reflect.Value{})
 }
