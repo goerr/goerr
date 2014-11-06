@@ -45,7 +45,7 @@ func foo() {
 	}
 
 	defer func() {
-		if r := goerr.RecoWrap(recover()); r != nil {
+		if r := goerr.XQZ(recover()); r != nil {
 			fmt.Println("recovered from ", r)
 		}
 	}()

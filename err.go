@@ -4,11 +4,11 @@ import (
 	"reflect"
 )
 
-//RecoWrap is used in the clients code to wrap all calls recover to
+//XQZ is used in the clients code to wrap all calls recover to
 //avoid recovering goerr internal panic by the client's code, for example:
-//RecoWrap(recover());.
+//XQZ(recover());.
 //Elsewhere, it doesn't do anything, you can delete it
-func RecoWrap(r interface{}) interface{} {
+func XQZ(r interface{}) interface{} {
 	switch r.(type) {
 	case panik:
 		return nil
