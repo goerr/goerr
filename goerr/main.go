@@ -59,8 +59,6 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 		case []ast.Stmt:
 
 			for sssid, sss := range lll {
-				_ = sssid
-				_ = sss
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
@@ -230,21 +228,9 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		}
 	}
 
-	_ = stek
-
 	if rewriter {
 
 		baff := &(bufflist.List)
-
-		identA := ast.NewIdent("a")
-		fortyTwo := &ast.BasicLit{Kind: token.INT, Value: "42"}
-		assignment := &ast.AssignStmt{Lhs: []ast.Expr{identA}, Rhs: []ast.Expr{fortyTwo}}
-		nothing := []ast.Stmt(nil)
-		well := []ast.Stmt{assignment}
-		_ = well
-		something := &ast.IfStmt{Body: &ast.BlockStmt{Lbrace: 398, List: nothing, Rbrace: 402}}
-		_ = something
-		_ = assignment
 
 		put := []ast.Stmt{&ast.EmptyStmt{}}
 
@@ -257,7 +243,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			toput := ((*s).bodies)[stek[i].idz-1]
 
-			_ = i
 			put = append(put, toput)
 
 			var nargs *ast.CallExpr
@@ -279,9 +264,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 					varz[tput.Name] = true
 				}
-
-				_ = tput
-				_ = puttoff
 
 				argsliceshiftone(stek[i].lhs, puttoff, puttot, tput, ast.NewIdent("_"))
 
@@ -321,8 +303,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				Lparen: 0,
 				Tok:    token.VAR,
 				Specs:  []ast.Spec{&lspec}}
-
-			_ = declaration
 
 			smt := ast.DeclStmt{Decl: &declaration}
 
@@ -381,9 +361,6 @@ func hanAction(c *cli.Context) {
 			s.Path.Value = ""
 		}
 	}
-
-	_ = fc
-	_ = fe
 
 	eh := errf{m: make(map[string]int)}
 
