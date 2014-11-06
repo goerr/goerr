@@ -601,6 +601,12 @@ func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
 		out = append(out, j)
 	}
 
+	for len(offs) > 0 {
+		out = append(out, put[0])
+		offs = offs[1:]
+		put = put[1:]
+	}
+
 	*baf = out
 }
 
