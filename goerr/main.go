@@ -23,10 +23,11 @@ func massageAction(c *cli.Context) {
 }
 
 type spewlord struct {
-	f      func(string) int
-	bodies []*ast.BlockStmt
+	f       func(string) int
+	bodies  []*ast.BlockStmt
 	eargtxt []*ast.Ident
 	eargoff []int
+	eargtot []int
 }
 
 type item struct {
@@ -149,7 +150,7 @@ type errf struct {
 	bodies  []*ast.BlockStmt
 	eargtxt []*ast.Ident
 	eargoff []int
-	
+	eargtot []int
 }
 
 func (e *errf) Visit(node ast.Node) ast.Visitor {
@@ -195,6 +196,7 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 
 		e.eargtxt = append(e.eargtxt, nonstrerrp)
 		e.eargoff = append(e.eargoff, errori)
+		e.eargtot = append(e.eargtot, len(arglist))
 
 		str := n.Name.String()
 		//		spew.Dump(n.Body)
@@ -300,8 +302,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				spew.Dump("$********$")
 			}
 
-
-
 			stek[i].rrr.Fun = nargs.Fun
 			stek[i].rrr.Args = nargs.Args
 			stek[i].rrr.Ellipsis = nargs.Ellipsis
@@ -314,29 +314,27 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			}
 
-
 			if stek[i].lhs != nil {
 
-			tput := ((*s).eargtxt)[stek[i].idz-1]
-			puttoff := ((*s).eargoff)[stek[i].idz-1]
+				tput := ((*s).eargtxt)[stek[i].idz-1]
+				puttoff := ((*s).eargoff)[stek[i].idz-1]
+				puttot := ((*s).eargtot)[stek[i].idz-1]
 
+				if debag == 6 {
+					spew.Dump(stek[i].lhs)
+					spew.Dump(tput, puttoff, puttot, "**********$")
+				}
 
-			if debag == 6 {
-				spew.Dump(stek[i].lhs)
-				spew.Dump(tput, puttoff, "**********$")
-			}
+				_ = tput
+				_ = puttoff
 
-
-			_ = tput
-			_ = puttoff
-
-			argsliceshiftone(stek[i].lhs, puttoff, tput, ast.NewIdent("_"))
-/*
-			if debag == 6 {
-				spew.Dump(stek[i].lhs)
-				spew.Dump(":D:D:**$")
-			}
-*/
+				argsliceshiftone(stek[i].lhs, puttoff, puttot, tput, ast.NewIdent("_"))
+				/*
+					if debag == 6 {
+						spew.Dump(stek[i].lhs)
+						spew.Dump(":D:D:**$")
+					}
+				*/
 			}
 		}
 
@@ -421,9 +419,10 @@ func hanAction(c *cli.Context) {
 
 	for _, s := range fc.Decls {
 		ast.Walk(&spewlord{f: funny,
-			bodies: eh.bodies,
+			bodies:  eh.bodies,
 			eargtxt: eh.eargtxt,
 			eargoff: eh.eargoff,
+			eargtot: eh.eargtot,
 		}, s)
 	}
 
@@ -470,7 +469,7 @@ func slicerm(baf *[]*ast.ImportSpec, n int) {
 	(*baf) = (*baf)[:end]
 }
 
-func argsliceshiftone(baf *[]ast.Expr, off int, put *ast.Ident, fill *ast.Ident) {
+func argsliceshiftone(baf *[]ast.Expr, off int, tot int, put *ast.Ident, fill *ast.Ident) {
 	var out []ast.Expr
 
 	for i, j := range *baf {
@@ -480,11 +479,12 @@ func argsliceshiftone(baf *[]ast.Expr, off int, put *ast.Ident, fill *ast.Ident)
 		out = append(out, j)
 	}
 
-	for len(out) < off {
-		out = append(out, fill)
-	}
-	if len(out) == off {
-		out = append(out, put)
+	for len(out) < tot {
+		if len(out) == off {
+			out = append(out, put)
+		} else {
+			out = append(out, fill)
+		}
 	}
 
 	*baf = out
