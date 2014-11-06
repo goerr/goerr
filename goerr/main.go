@@ -326,8 +326,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			smt := ast.DeclStmt{Decl: &declaration}
 
-			hhh := []ast.Stmt{&smt}
-
 			for i := range offz {
 				offz[i]++
 			}
