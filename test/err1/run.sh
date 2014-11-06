@@ -8,5 +8,5 @@ cd ../test/err1/
 rm err.go
 go fmt main.go
 cat -n main.go
-# go build && ./err1
+go build && ./err1
 git checkout  main.go err.go

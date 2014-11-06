@@ -43,7 +43,6 @@ func callmanage(baz *ast.Stmt, foo *ast.CallExpr, f func(string) int, st *[]item
 	case *ast.Ident:
 		valuee := f(funnam.Name)
 
-
 		if valuee != 0 {
 
 			if debag == 4 {
@@ -82,13 +81,13 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
-/*
+					/*
 						if debag == 4 {
 							spew.Dump("!!!!!!!!!!??")
 							spew.Dump(sss)
 
 						}
-*/
+					*/
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
 						callmanage(&lll[sssid], foo, f, &st, sssid, &o, nil, &er)
@@ -321,19 +320,20 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			}
 
-/*
-			if stek[i].root != nil {
+			/*
+				if stek[i].root != nil {
 
 
 
-				*(stek[i].root) = nil
-			}
-*/
+					*(stek[i].root) = nil
+				}
+			*/
+
+			tput := ((*s).eargtxt)[stek[i].idz-1]
+			puttoff := ((*s).eargoff)[stek[i].idz-1]
+			puttot := ((*s).eargtot)[stek[i].idz-1]
+
 			if stek[i].lhs != nil {
-
-				tput := ((*s).eargtxt)[stek[i].idz-1]
-				puttoff := ((*s).eargoff)[stek[i].idz-1]
-				puttot := ((*s).eargtot)[stek[i].idz-1]
 
 				if debag == 6 {
 					spew.Dump(stek[i].lhs)
@@ -351,16 +351,12 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 					}
 				*/
 
-
-
 				if debag == 4 {
 					spew.Dump("??????????????????????????/")
 					spew.Dump(stek[i].root)
 
-
 				}
 			} else {
-
 
 				if debag == 4 {
 					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -369,41 +365,32 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 				}
 
-//					call := *(stek[i].root)
+				newlhs := []ast.Expr{}
+				argsliceshiftone(&newlhs, puttoff, puttot, tput, ast.NewIdent("_"))
 
+				assignment := ast.AssignStmt{
+					Lhs:    newlhs,
+					TokPos: 0,
+					Tok:    token.DEFINE,
+					Rhs:    []ast.Expr{stek[i].rrr}}
 
-					www := ast.ExprStmt{X: nil}
-					_ = www
-					// first put together the statement "a = 42"
-					identA := ast.NewIdent("fooooo")
-					fortyTwo := &ast.BasicLit{Kind: token.INT, Value: "42"}
-					_ = fortyTwo
-					assignment := ast.AssignStmt{
-						Lhs: []ast.Expr{identA},
-						TokPos: 0,
-						Tok: token.DEFINE,
-						Rhs: []ast.Expr{stek[i].rrr}}
-
-
-					*(stek[i].root) = &assignment
-
+				*(stek[i].root) = &assignment
 
 				if debag == 4 {
 					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 					spew.Dump(stek[i].root)
 
-
 				}
 				/*
 
 				*/
-/*
-				if debag == 4 {
-					spew.Dump(stek[i])
-					spew.Dump("@@@@@@@@@@@@@@")
+				/*
+					if debag == 4 {
+						spew.Dump(stek[i])
+						spew.Dump("@@@@@@@@@@@@@@")
 
-				}
-*/
+					}
+				*/
 			}
 		}
 
