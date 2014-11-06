@@ -6,7 +6,7 @@ import (
 )
 
 func errPASS0(a error, b string, c int) (string, int) {
-	if (a != nil) {
+	if a != nil {
 		fmt.Println("ERR PASS0")
 	}
 
@@ -16,7 +16,7 @@ func errPASS0(a error, b string, c int) (string, int) {
 }
 
 func errPASS1(a bool, b error, c int) (bool, int) {
-	if (b != nil) {
+	if b != nil {
 		fmt.Println("ERR PASS1")
 	}
 
@@ -24,7 +24,7 @@ func errPASS1(a bool, b error, c int) (bool, int) {
 }
 
 func errPASS2(a bool, b string, c error) (bool, string) {
-	if (c != nil) {
+	if c != nil {
 		fmt.Println("ERR PASS2")
 	}
 

@@ -22,11 +22,19 @@ func pass2() (bool, string, error) {
 }
 
 func try() {
+	errPASS0(pass0())
+	errPASS1(pass1())
+	errPASS2(pass2())
+
+	u := errPASS0(pass0())
+	v := errPASS1(pass1())
+	w := errPASS2(pass2())
+
 	a, b := errPASS0(pass0())
 	p, q := errPASS1(pass1())
 	x, y := errPASS2(pass2())
 
-	fmt.Println(a,b,p,q,x,y)
+	fmt.Println(a, b, p, q, x, y, u, v, w)
 }
 
 func main() {
