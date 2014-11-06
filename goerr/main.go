@@ -3,23 +3,15 @@ package main
 import (
 	"fmt"
 	"github.com/codegangsta/cli"
-	"github.com/davecgh/go-spew/spew"
 	"go/ast"
 	"go/parser"
 	"go/printer"
 	"go/token"
-	//	"io/ioutil"
 	"os"
-	//	"strings"
 )
 
-func i() {
-	spew.Dump(0)
-	printer.Fprint(os.Stdout, nil, nil)
-}
-
 func massageAction(c *cli.Context) {
-	fmt.Println("massaging the codebase")
+	fmt.Println("TODO :)")
 }
 
 type spewlord struct {
@@ -46,11 +38,6 @@ func callmanage(op bool, baz *ast.Stmt, foo *ast.CallExpr, f func(string) int, s
 
 		if valuee != 0 {
 
-			if debag == 31 {
-
-				spew.Dump("PAT", funnam.Name, valuee, baz)
-			}
-
 			(*st) = append(*st, item{op: op, root: baz, off: sssid + *o, idz: valuee, rrr: foo, lhs: lhs})
 			(*e) = nil
 			(*o)++
@@ -70,25 +57,14 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 
 		switch lll := interface{}(ggg.List).(type) {
 		case []ast.Stmt:
-			/*
-				if debag == 31 {
-					spew.Dump("????????????????")
-					spew.Dump(lll)
-				}
-			*/
+
 			for sssid, sss := range lll {
 				_ = sssid
 				_ = sss
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
-					/*
-						if debag == 4 {
-							spew.Dump("!!!!!!!!!!??")
-							spew.Dump(sss)
 
-						}
-					*/
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
 						callmanage(false, &lll[sssid], foo, f, &st, sssid, &o, nil, &er)
@@ -102,7 +78,7 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 					lhs := &nod.Lhs
 
 					if s != ":=" && s != "=" {
-						spew.Dump("!operator?" + s)
+						fmt.Dump("!operator?" + s)
 					}
 
 					op := s == "="
@@ -167,7 +143,6 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 			switch errargt := interface{}(arglist[i].Type).(type) {
 			case *ast.Ident:
 				if errargt.Name == "error" {
-					//fmt.Fprintln(os.Stderr, "TODO arg type IS error")
 					errori = i
 					break
 				}
@@ -184,14 +159,10 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 		switch errargn := interface{}(arglist[errori].Names).(type) {
 		case []*ast.Ident:
 			if len(errargn) != 1 {
-				spew.Dump("TODO arg multiple names?")
+				fmt.Fprintln(os.Stderr, "TODO arg multiple names?")
 				return e
 			}
 			nonstrerrp = errargn[0]
-		}
-
-		if debag == 6 {
-			spew.Dump(nonstrerrp, errori, len(arglist))
 		}
 
 		e.eargtxt = append(e.eargtxt, nonstrerrp)
@@ -199,9 +170,7 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 		e.eargtot = append(e.eargtot, len(arglist))
 
 		str := n.Name.String()
-		//		spew.Dump(n.Body)
 		e.bodies = append(e.bodies, n.Body)
-		//		spew.Dump("FOUND:" + str)
 		e.m[str] = len(e.bodies)
 
 	case *ast.BlockStmt:
@@ -261,7 +230,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 		baff := &(bufflist.List)
 
-		// first put together the statement "a = 42"
 		identA := ast.NewIdent("a")
 		fortyTwo := &ast.BasicLit{Kind: token.INT, Value: "42"}
 		assignment := &ast.AssignStmt{Lhs: []ast.Expr{identA}, Rhs: []ast.Expr{fortyTwo}}
@@ -274,8 +242,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 		put := []ast.Stmt {&ast.EmptyStmt{}}
 
-		//		spew.Dump("offz:$", len(offz))
-
 		offz := []int {0}
 		varz := make(map[string]bool)
 
@@ -284,22 +250,13 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			offz = append(offz, stek[i].off+1)
 
 			toput := ((*s).bodies)[stek[i].idz-1]
-			if debag == 18 {
-				spew.Dump(toput)
-				spew.Dump("**********$")
-			}
+
 			_ = i
 			put = append(put, toput)
 
 			var nargs *ast.CallExpr
 			nargs = stek[i].rrr.Args[0].(*ast.CallExpr)
 
-			if debag == 1 {
-				spew.Dump(stek[i].rrr)
-				spew.Dump("$$$$$$$$$$$")
-				spew.Dump(nargs)
-				spew.Dump("$********$")
-			}
 
 			stek[i].rrr.Fun = nargs.Fun
 			stek[i].rrr.Args = nargs.Args
@@ -307,20 +264,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			stek[i].rrr.Lparen = nargs.Lparen
 			stek[i].rrr.Rparen = nargs.Rparen
 
-			if debag == 1 {
-				spew.Dump(stek[i].rrr)
-				spew.Dump("@@@@@@@@@@@@@@")
 
-			}
-
-			/*
-				if stek[i].root != nil {
-
-
-
-					*(stek[i].root) = nil
-				}
-			*/
 
 			tput := ((*s).eargtxt)[stek[i].idz-1]
 			puttoff := ((*s).eargoff)[stek[i].idz-1]
@@ -329,40 +273,18 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			if stek[i].lhs != nil {
 
 				if stek[i].op {
-					spew.Dump("we must put vars because:")
+
 					varz[tput.Name] = true
 				} 
-
-				if debag == 4 {
-					//					spew.Dump(stek[i].lhs)
-					spew.Dump(tput, puttoff, puttot, "**********$")
-				}
 
 				_ = tput
 				_ = puttoff
 
 				argsliceshiftone(stek[i].lhs, puttoff, puttot, tput, ast.NewIdent("_"))
-				/*
-					if debag == 6 {
-						spew.Dump(stek[i].lhs)
-						spew.Dump(":D:D:**$")
-					}
-				*/
 
-				if debag == 31 {
-					spew.Dump("??????????????????????????/")
-					spew.Dump(stek[i].root)
 
-				}
 
 			} else {
-
-				if debag == 4 {
-					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-					//					spew.Dump(stek[i].root)
-					//					spew.Dump(stek[i].rrr)
-
-				}
 
 				newlhs := []ast.Expr{}
 				argsliceshiftone(&newlhs, puttoff, puttot, tput, ast.NewIdent("_"))
@@ -377,21 +299,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 				varz[tput.Name] = true
 
-				if debag == 4 {
-					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-					//spew.Dump(stek[i].root)
-
-				}
-				/*
-
-				*/
-				/*
-					if debag == 4 {
-						spew.Dump(stek[i])
-						spew.Dump("@@@@@@@@@@@@@@")
-
-					}
-				*/
 			}
 		}
 
@@ -402,7 +309,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				idents = append(idents, ast.NewIdent(item))
 			}
 
-			//			rspec := ast.TypeSpec{Name: ast.NewIdent("error")}
+
 			lspec := ast.ValueSpec{
 				Names: idents,
 				Type:  ast.NewIdent("error")}
@@ -421,7 +328,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			hhh := []ast.Stmt{&smt}
 
-			spew.Dump(hhh)
 
 			for i := range offz {
 				offz[i]++
@@ -436,19 +342,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		}
 
 		sliceshift(baff, offz, put)
-		/*
 
-		*/
-		if debag == 1 {
-			for i := range offz {
-				_ = i
-				//		spew.Dump((*baff)[i])
-			}
-			//			spew.Dump("hello")
-			//			spew.Dump(offz)
-			//			spew.Dump(idz)
-			//			spew.Dump(baff)
-		}
 		return s
 	}
 
@@ -471,9 +365,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 }
 
 func hanAction(c *cli.Context) {
-	//	fmt.Println("added task han: ", c.Command.Flags)
-
-	//	spew.Dump(c.globalSet)
 
 	codefile := c.GlobalString("f")
 
@@ -482,16 +373,7 @@ func hanAction(c *cli.Context) {
 	need_use_stdout := c.GlobalString("o")
 
 	use_stdout := codefile == "" && need_use_stdout != ""
-	/*
-		errf, _ := os.Open(errfile)
-		defer errf.Close()
 
-		codf, _ := os.Open(codefile)
-		defer codf.Close()
-
-		codeall, _ := ioutil.ReadAll(codf)
-		errall, _ := ioutil.ReadAll(errf)
-	*/
 	fsete := token.NewFileSet()
 	fsetc := token.NewFileSet()
 	fc, _ := parser.ParseFile(fsetc, codefile, nil, 0)
@@ -535,23 +417,10 @@ func hanAction(c *cli.Context) {
 	outf.Sync()
 	outf.Close()
 
-	if debag == 2 {
 
-	}
-	//	spew.Dump(fc.Imports)
-	if debag == 3 {
-		spew.Dump(fc.Decls)
-	}
-	//	spew.Dump(fe.Decls)
-
-}
-
-func delAction(c *cli.Context) {
-	fmt.Println("added task del: ", c)
 }
 
 func missingAction(c *cli.Context) {
-	//TODO
 	fmt.Println("TODO :)")
 }
 
@@ -611,16 +480,7 @@ func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
 }
 
 func main() {
-	/*
-		if debag == 1337 {
-			baf := []int{49868, 685498, 3218, 654, 6541, 6531, 486}
-			put := []int{0, 1}
-			where := []int{2, 4}
-			sliceshift(&baf, where, put)
-			spew.Dump(baf)
-			os.Exit(0)
-		}
-	*/
+
 	// global level flags
 	flagz := []cli.Flag{
 		cli.StringFlag{
