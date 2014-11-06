@@ -36,16 +36,17 @@ type item struct {
 	off  int
 	idz  int
 	lhs  *[]ast.Expr
+	op   bool
 }
 
-func callmanage(baz *ast.Stmt, foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o *int, lhs *[]ast.Expr, e *error) {
+func callmanage(op bool, baz *ast.Stmt, foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o *int, lhs *[]ast.Expr, e *error) {
 	switch funnam := foo.Fun.(type) {
 	case *ast.Ident:
 		valuee := f(funnam.Name)
 
 		if valuee != 0 {
 
-			if debag == 4 {
+			if debag == 31 {
 
 				spew.Dump("PAT", funnam.Name, valuee, baz)
 			}
@@ -90,35 +91,25 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 					*/
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
-						callmanage(&lll[sssid], foo, f, &st, sssid, &o, nil, &er)
+						callmanage(false, &lll[sssid], foo, f, &st, sssid, &o, nil, &er)
 
 					}
 
 				case *ast.AssignStmt:
 
-					var lhs *[]ast.Expr
+					s := nod.Tok.String()
 
-					if nod.Tok.String() == ":=" {
-						lhs = &nod.Lhs
-						if debag == 31 {
-							spew.Dump("!!!!!!!!!!??")
-							spew.Dump(nod)
+					lhs := &nod.Lhs
 
-						}
+					if s != ":=" && s != "=" {
+						spew.Dump("!operator?" + s)
 					}
 
-					if nod.Tok.String() == "=" {
-						if debag == 31 {
-							spew.Dump("FIXME = operator")
-							spew.Dump("!!!!!!!!!!??")
-							spew.Dump(nod)
-
-						}
-					}
+					op := s == "="
 
 					switch foo := interface{}(nod.Rhs[0]).(type) {
 					case *ast.CallExpr:
-						callmanage(&lll[sssid], foo, f, &st, sssid, &o, lhs, &er)
+						callmanage(op, &lll[sssid], foo, f, &st, sssid, &o, lhs, &er)
 					}
 
 				}
@@ -286,6 +277,8 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 		var offz []int
 
+		varz := make(map[string]bool)
+
 		for i := range stek {
 
 			offz = append(offz, stek[i].off)
@@ -335,8 +328,13 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			if stek[i].lhs != nil {
 
-				if debag == 6 {
-					spew.Dump(stek[i].lhs)
+				if !stek[i].op {
+					spew.Dump("we must put vars because:")
+					varz["sdgfs"] = true
+				}
+
+				if debag == 4 {
+					//					spew.Dump(stek[i].lhs)
 					spew.Dump(tput, puttoff, puttot, "**********$")
 				}
 
@@ -351,17 +349,18 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 					}
 				*/
 
-				if debag == 4 {
+				if debag == 31 {
 					spew.Dump("??????????????????????????/")
 					spew.Dump(stek[i].root)
 
 				}
+
 			} else {
 
 				if debag == 4 {
 					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-					spew.Dump(stek[i].root)
-					spew.Dump(stek[i].rrr)
+					//					spew.Dump(stek[i].root)
+					//					spew.Dump(stek[i].rrr)
 
 				}
 
@@ -376,9 +375,12 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 				*(stek[i].root) = &assignment
 
+
+
+
 				if debag == 4 {
 					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-					spew.Dump(stek[i].root)
+					//spew.Dump(stek[i].root)
 
 				}
 				/*
@@ -392,6 +394,37 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 					}
 				*/
 			}
+		}
+
+		if len(varz) > 0 {
+			newlhs := []ast.Expr{}
+
+			for item := range varz {
+				newlhs = append(newlhs, ast.NewIdent(item))
+			}
+
+//			rspec := ast.TypeSpec{Name: ast.NewIdent("error")}
+			lspec := ast.ValueSpec{
+				Names: []*ast.Ident{ast.NewIdent("a"), ast.NewIdent("b")},
+				Type: ast.NewIdent("error")}
+
+			declaration := ast.GenDecl{
+				Doc:    nil,
+				TokPos: 0,
+				Rparen: 0,
+				Lparen: 0,
+				Tok:    token.VAR,
+				Specs:  []ast.Spec{&lspec}}
+
+			_ = declaration
+
+			smt := ast.DeclStmt{Decl: &declaration}
+
+			hhh := []ast.Stmt{&smt}
+
+			spew.Dump(hhh)
+
+			sliceshift(baff, []int{0}, hhh)
 		}
 
 		sliceshift(baff, offz, put)
