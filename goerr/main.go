@@ -25,15 +25,18 @@ func massageAction(c *cli.Context) {
 type spewlord struct {
 	f      func(string) int
 	bodies []*ast.BlockStmt
+	eargtxt []*ast.Ident
+	eargoff []int
 }
 
 type item struct {
 	rrr *ast.CallExpr
 	off int
 	idz int
+	lhs *[]ast.Expr
 }
 
-func callmanage(foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o *int, e *error) {
+func callmanage(foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o *int, lhs *[]ast.Expr, e *error) {
 	switch funnam := foo.Fun.(type) {
 	case *ast.Ident:
 		valuee := f(funnam.Name)
@@ -43,7 +46,7 @@ func callmanage(foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o 
 		}
 
 		if valuee != 0 {
-			(*st) = append(*st, item{off: sssid + *o, idz: valuee, rrr: foo})
+			(*st) = append(*st, item{off: sssid + *o, idz: valuee, rrr: foo, lhs: lhs})
 			(*e) = nil
 			(*o)++
 		}
@@ -62,37 +65,50 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 
 		switch lll := interface{}(ggg.List).(type) {
 		case []ast.Stmt:
-
+			/*
+				if debag == 31 {
+					spew.Dump("????????????????")
+					spew.Dump(lll)
+				}
+			*/
 			for sssid, sss := range lll {
 				_ = sssid
 				_ = sss
-
-				if debag == 31 {
-					spew.Dump("????????????????")
-					spew.Dump(sssid)
-					//					spew.Dump(sss)
-				}
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
 
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
-						callmanage(foo, f, &st, sssid, &o, &er)
+						callmanage(foo, f, &st, sssid, &o, nil, &er)
 
 					}
 
 				case *ast.AssignStmt:
 
-					if debag == 31 {
-						spew.Dump("!!!!!!!!!!??")
-						spew.Dump(nod.Rhs[0])
+					var lhs *[]ast.Expr
 
+					if nod.Tok.String() == ":=" {
+						lhs = &nod.Lhs
+						if debag == 31 {
+							spew.Dump("!!!!!!!!!!??")
+							spew.Dump(nod)
+
+						}
+					}
+
+					if nod.Tok.String() == "=" {
+						if debag == 31 {
+							spew.Dump("FIXME = operator")
+							spew.Dump("!!!!!!!!!!??")
+							spew.Dump(nod)
+
+						}
 					}
 
 					switch foo := interface{}(nod.Rhs[0]).(type) {
 					case *ast.CallExpr:
-						callmanage(foo, f, &st, sssid, &o, &er)
+						callmanage(foo, f, &st, sssid, &o, lhs, &er)
 					}
 
 				}
@@ -131,7 +147,9 @@ func witch(node ast.Node) (*ast.CallExpr, *ast.Ident, *ast.Ident, error) {
 type errf struct {
 	m       map[string]int
 	bodies  []*ast.BlockStmt
-	eargtxt []string
+	eargtxt []*ast.Ident
+	eargoff []int
+	
 }
 
 func (e *errf) Visit(node ast.Node) ast.Visitor {
@@ -148,12 +166,11 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 			switch errargt := interface{}(arglist[i].Type).(type) {
 			case *ast.Ident:
 				if errargt.Name == "error" {
-					//				fmt.Fprintln(os.Stderr, "TODO arg type IS error")
+					//fmt.Fprintln(os.Stderr, "TODO arg type IS error")
 					errori = i
 					break
 				}
 			}
-
 		}
 
 		if errori == -1 {
@@ -161,22 +178,23 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 			return e
 		}
 
-		strerrp := ""
+		var nonstrerrp *ast.Ident
 
 		switch errargn := interface{}(arglist[errori].Names).(type) {
 		case []*ast.Ident:
 			if len(errargn) != 1 {
-				fmt.Fprintln(os.Stderr, "TODO arg multiple names?")
+				spew.Dump("TODO arg multiple names?")
 				return e
 			}
-			strerrp = errargn[0].Name
+			nonstrerrp = errargn[0]
 		}
 
-		if debag == 31 {
-			spew.Dump(strerrp)
+		if debag == 6 {
+			spew.Dump(nonstrerrp, errori, len(arglist))
 		}
 
-		e.eargtxt = append(e.eargtxt, strerrp)
+		e.eargtxt = append(e.eargtxt, nonstrerrp)
+		e.eargoff = append(e.eargoff, errori)
 
 		str := n.Name.String()
 		//		spew.Dump(n.Body)
@@ -193,7 +211,6 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 
 				n.List = n.List[:in]
 				return e
-
 
 			case *ast.ExprStmt:
 				switch call := no.X.(type) {
@@ -266,7 +283,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			offz = append(offz, stek[i].off)
 
 			toput := ((*s).bodies)[stek[i].idz-1]
-			if debag == 1 {
+			if debag == 18 {
 				spew.Dump(toput)
 				spew.Dump("**********$")
 			}
@@ -283,6 +300,8 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				spew.Dump("$********$")
 			}
 
+
+
 			stek[i].rrr.Fun = nargs.Fun
 			stek[i].rrr.Args = nargs.Args
 			stek[i].rrr.Ellipsis = nargs.Ellipsis
@@ -293,6 +312,31 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				spew.Dump(stek[i].rrr)
 				spew.Dump("@@@@@@@@@@@@@@")
 
+			}
+
+
+			if stek[i].lhs != nil {
+
+			tput := ((*s).eargtxt)[stek[i].idz-1]
+			puttoff := ((*s).eargoff)[stek[i].idz-1]
+
+
+			if debag == 6 {
+				spew.Dump(stek[i].lhs)
+				spew.Dump(tput, puttoff, "**********$")
+			}
+
+
+			_ = tput
+			_ = puttoff
+
+			argsliceshiftone(stek[i].lhs, puttoff, tput, ast.NewIdent("_"))
+/*
+			if debag == 6 {
+				spew.Dump(stek[i].lhs)
+				spew.Dump(":D:D:**$")
+			}
+*/
 			}
 		}
 
@@ -376,7 +420,11 @@ func hanAction(c *cli.Context) {
 	funny := func(s string) int { return eh.m[s] }
 
 	for _, s := range fc.Decls {
-		ast.Walk(&spewlord{f: funny, bodies: eh.bodies}, s)
+		ast.Walk(&spewlord{f: funny,
+			bodies: eh.bodies,
+			eargtxt: eh.eargtxt,
+			eargoff: eh.eargoff,
+		}, s)
 	}
 
 	var outf *os.File
@@ -420,6 +468,26 @@ func slicerm(baf *[]*ast.ImportSpec, n int) {
 		(*baf)[i] = (*baf)[i+1]
 	}
 	(*baf) = (*baf)[:end]
+}
+
+func argsliceshiftone(baf *[]ast.Expr, off int, put *ast.Ident, fill *ast.Ident) {
+	var out []ast.Expr
+
+	for i, j := range *baf {
+		if i == off {
+			out = append(out, put)
+		}
+		out = append(out, j)
+	}
+
+	for len(out) < off {
+		out = append(out, fill)
+	}
+	if len(out) == off {
+		out = append(out, put)
+	}
+
+	*baf = out
 }
 
 func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
