@@ -51,7 +51,7 @@ func callmanage(op bool, baz *ast.Stmt, foo *ast.CallExpr, f func(string) int, s
 				spew.Dump("PAT", funnam.Name, valuee, baz)
 			}
 
-			(*st) = append(*st, item{root: baz, off: sssid + *o, idz: valuee, rrr: foo, lhs: lhs})
+			(*st) = append(*st, item{op: op, root: baz, off: sssid + *o, idz: valuee, rrr: foo, lhs: lhs})
 			(*e) = nil
 			(*o)++
 		}
@@ -329,7 +329,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			if stek[i].lhs != nil {
 
-				if !stek[i].op {
+				if stek[i].op {
 					spew.Dump("we must put vars because:")
 					varz[tput.Name] = true
 				}
