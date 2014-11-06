@@ -191,26 +191,30 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 			switch no := nod.(type) {
 			case *ast.ReturnStmt:
 
-				n.List[in] = &ast.EmptyStmt{}
+				n.List = n.List[:in]
+				return e
 
-				if debag == 8 {
-					spew.Dump("????????????????")
-					spew.Dump(no)
 
+			case *ast.ExprStmt:
+				switch call := no.X.(type) {
+				case *ast.CallExpr:
+
+					switch funx := call.Fun.(type) {
+					case *ast.Ident:
+						if funx.Name == "Return" {
+
+							n.List[in] = &ast.ReturnStmt{Return: 0, Results: call.Args}
+
+						}
+
+					}
 				}
-
 			}
 
 		}
 
 	default:
-/*
-				if debag == 8 {
-					spew.Dump("????????????????")
-					spew.Dump(n)
 
-				}
-*/
 		return e
 	}
 
