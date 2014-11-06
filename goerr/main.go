@@ -27,15 +27,39 @@ type spewlord struct {
 	bodies []*ast.BlockStmt
 }
 
-func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.BlockStmt, offs []int, idz []int, er error) {
-	var e = fmt.Errorf("Incorrect block node")
-	er = e
+type item struct {
+	rrr *ast.CallExpr
+	off int
+	idz int
+}
+
+func callmanage(foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o *int, e *error) {
+	switch funnam := foo.Fun.(type) {
+	case *ast.Ident:
+		valuee := f(funnam.Name)
+		if debag == 8 {
+
+			spew.Dump("hello", funnam.Name, valuee)
+		}
+
+		if valuee != 0 {
+			(*st) = append(*st, item{off: sssid+*o, idz: valuee, rrr: foo})
+			(*e) = nil
+			(*o)++
+		}
+
+	}
+}
+
+func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er error) {
+	er = fmt.Errorf("Incorrect block node")
 
 	o := 0
 
 	switch ggg := node.(type) {
 	case *ast.BlockStmt:
 		bbb = ggg
+
 		switch lll := interface{}(ggg.List).(type) {
 		case []ast.Stmt:
 
@@ -46,45 +70,31 @@ func wesit(node ast.Node, f func(string) int) (rrr []*ast.CallExpr, bbb *ast.Blo
 				if debag == 8 {
 					spew.Dump("????????????????")
 					spew.Dump(sssid)
-//					spew.Dump(sss)
+					//					spew.Dump(sss)
 				}
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
 
-
-
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
-
-						switch funnam := foo.Fun.(type) {
-						case *ast.Ident:
-							valuee := f(funnam.Name)
-							if debag == 8 {
-
-								spew.Dump("hello", funnam.Name, valuee)
-							}
-
-							if valuee != 0 {
-
-								er = nil
-								offs = append(offs, sssid+o)
-								idz = append(idz, valuee)
-								rrr = append(rrr, foo)
-
-								o++
-							}
-
-						}
+						callmanage(foo, f, &st, sssid, &o, &er)
 
 					}
 
 				case *ast.AssignStmt:
 
-				if debag == 8 {
-					spew.Dump("!!!!!!!!!!??")
-					spew.Dump(nod)
-				}
+					if debag == 8 {
+						spew.Dump("!!!!!!!!!!??")
+						spew.Dump(nod.Rhs[0])
+
+					}
+
+					switch foo := interface{}(nod.Rhs[0]).(type) {
+					case *ast.CallExpr:
+						callmanage(foo, f, &st, sssid, &o, &er)
+					}
+
 				}
 
 			}
@@ -192,14 +202,14 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 	if err != nil {
 		rewriter = true
 	}
-	rrr, bufflist, offz, idz, err2 := wesit(node, s.f)
+	stek, bufflist, err2 := wesit(node, s.f)
 	if err2 != nil {
 		if rewriter {
 			return s
 		}
 	}
 
-	_ = rrr
+	_ = stek
 
 	if rewriter {
 
@@ -219,9 +229,13 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 		//		spew.Dump("offz:$", len(offz))
 
-		for i := range offz {
+		var offz []int
 
-			toput := ((*s).bodies)[idz[i]-1]
+		for i := range stek {
+
+			offz = append(offz, stek[i].off)
+
+			toput := ((*s).bodies)[stek[i].idz-1]
 			if debag == 1 {
 				spew.Dump(toput)
 				spew.Dump("**********$")
@@ -230,23 +244,23 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			put = append(put, toput)
 
 			var nargs *ast.CallExpr
-			nargs = rrr[i].Args[0].(*ast.CallExpr)
+			nargs = stek[i].rrr.Args[0].(*ast.CallExpr)
 
 			if debag == 1 {
-				spew.Dump(rrr[i])
+				spew.Dump(stek[i].rrr)
 				spew.Dump("$$$$$$$$$$$")
 				spew.Dump(nargs)
 				spew.Dump("$********$")
 			}
 
-			rrr[i].Fun = nargs.Fun
-			rrr[i].Args = nargs.Args
-			rrr[i].Ellipsis = nargs.Ellipsis
-			rrr[i].Lparen = nargs.Lparen
-			rrr[i].Rparen = nargs.Rparen
+			stek[i].rrr.Fun = nargs.Fun
+			stek[i].rrr.Args = nargs.Args
+			stek[i].rrr.Ellipsis = nargs.Ellipsis
+			stek[i].rrr.Lparen = nargs.Lparen
+			stek[i].rrr.Rparen = nargs.Rparen
 
 			if debag == 1 {
-				spew.Dump(rrr[i])
+				spew.Dump(stek[i].rrr)
 				spew.Dump("@@@@@@@@@@@@@@")
 
 			}
@@ -261,9 +275,9 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				_ = i
 				//		spew.Dump((*baff)[i])
 			}
-//			spew.Dump("hello")
-//			spew.Dump(offz)
-//			spew.Dump(idz)
+			//			spew.Dump("hello")
+			//			spew.Dump(offz)
+			//			spew.Dump(idz)
 			//			spew.Dump(baff)
 		}
 		return s
