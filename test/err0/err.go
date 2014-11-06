@@ -7,6 +7,8 @@ import (
 
 func errA(err error) {
 	if err != nil {
+		RecoWrap()
+
 		fmt.Println("Oh very")
 		//		Return()
 	}
