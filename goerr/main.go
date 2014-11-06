@@ -31,23 +31,27 @@ type spewlord struct {
 }
 
 type item struct {
-	rrr *ast.CallExpr
-	off int
-	idz int
-	lhs *[]ast.Expr
+	root *ast.Stmt
+	rrr  *ast.CallExpr
+	off  int
+	idz  int
+	lhs  *[]ast.Expr
 }
 
-func callmanage(foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o *int, lhs *[]ast.Expr, e *error) {
+func callmanage(baz *ast.Stmt, foo *ast.CallExpr, f func(string) int, st *[]item, sssid int, o *int, lhs *[]ast.Expr, e *error) {
 	switch funnam := foo.Fun.(type) {
 	case *ast.Ident:
 		valuee := f(funnam.Name)
-		if debag == 31 {
 
-			spew.Dump("hello", funnam.Name, valuee)
-		}
 
 		if valuee != 0 {
-			(*st) = append(*st, item{off: sssid + *o, idz: valuee, rrr: foo, lhs: lhs})
+
+			if debag == 4 {
+
+				spew.Dump("PAT", funnam.Name, valuee, baz)
+			}
+
+			(*st) = append(*st, item{root: baz, off: sssid + *o, idz: valuee, rrr: foo, lhs: lhs})
 			(*e) = nil
 			(*o)++
 		}
@@ -78,10 +82,16 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 
 				switch nod := sss.(type) {
 				case *ast.ExprStmt:
+/*
+						if debag == 4 {
+							spew.Dump("!!!!!!!!!!??")
+							spew.Dump(sss)
 
+						}
+*/
 					switch foo := interface{}(nod.X).(type) {
 					case *ast.CallExpr:
-						callmanage(foo, f, &st, sssid, &o, nil, &er)
+						callmanage(&lll[sssid], foo, f, &st, sssid, &o, nil, &er)
 
 					}
 
@@ -109,7 +119,7 @@ func wesit(node ast.Node, f func(string) int) (st []item, bbb *ast.BlockStmt, er
 
 					switch foo := interface{}(nod.Rhs[0]).(type) {
 					case *ast.CallExpr:
-						callmanage(foo, f, &st, sssid, &o, lhs, &er)
+						callmanage(&lll[sssid], foo, f, &st, sssid, &o, lhs, &er)
 					}
 
 				}
@@ -237,9 +247,6 @@ func (e *errf) Visit(node ast.Node) ast.Visitor {
 		return e
 	}
 
-	if debag == 4 {
-		spew.Dump(node)
-	}
 	return e
 }
 
@@ -314,6 +321,14 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 
 			}
 
+/*
+			if stek[i].root != nil {
+
+
+
+				*(stek[i].root) = nil
+			}
+*/
 			if stek[i].lhs != nil {
 
 				tput := ((*s).eargtxt)[stek[i].idz-1]
@@ -335,6 +350,60 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 						spew.Dump(":D:D:**$")
 					}
 				*/
+
+
+
+				if debag == 4 {
+					spew.Dump("??????????????????????????/")
+					spew.Dump(stek[i].root)
+
+
+				}
+			} else {
+
+
+				if debag == 4 {
+					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+					spew.Dump(stek[i].root)
+					spew.Dump(stek[i].rrr)
+
+				}
+
+//					call := *(stek[i].root)
+
+
+					www := ast.ExprStmt{X: nil}
+					_ = www
+					// first put together the statement "a = 42"
+					identA := ast.NewIdent("fooooo")
+					fortyTwo := &ast.BasicLit{Kind: token.INT, Value: "42"}
+					_ = fortyTwo
+					assignment := ast.AssignStmt{
+						Lhs: []ast.Expr{identA},
+						TokPos: 0,
+						Tok: token.DEFINE,
+						Rhs: []ast.Expr{stek[i].rrr}}
+
+
+					*(stek[i].root) = &assignment
+
+
+				if debag == 4 {
+					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+					spew.Dump(stek[i].root)
+
+
+				}
+				/*
+
+				*/
+/*
+				if debag == 4 {
+					spew.Dump(stek[i])
+					spew.Dump("@@@@@@@@@@@@@@")
+
+				}
+*/
 			}
 		}
 
