@@ -277,7 +277,6 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 		//		spew.Dump("offz:$", len(offz))
 
 		offz := []int {0}
-
 		varz := make(map[string]bool)
 
 		for i := range stek {
@@ -332,7 +331,7 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				if stek[i].op {
 					spew.Dump("we must put vars because:")
 					varz[tput.Name] = true
-				}
+				} 
 
 				if debag == 4 {
 					//					spew.Dump(stek[i].lhs)
@@ -371,10 +370,12 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 				assignment := ast.AssignStmt{
 					Lhs:    newlhs,
 					TokPos: 0,
-					Tok:    token.DEFINE,
+					Tok:    token.ASSIGN,
 					Rhs:    []ast.Expr{stek[i].rrr}}
 
 				*(stek[i].root) = &assignment
+
+				varz[tput.Name] = true
 
 				if debag == 4 {
 					spew.Dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -591,7 +592,7 @@ func sliceshift(baf *[]ast.Stmt, offs []int, put []ast.Stmt) {
 	o := 0
 
 	for i, j := range *baf {
-		if len(offs) > 0 && (i+o) == offs[0] {
+		if (i+o) == offs[0] {
 			out = append(out, put[0])
 			offs = offs[1:]
 			put = put[1:]
