@@ -1,22 +1,10 @@
-[![Stories in Ready](https://badge.waffle.io/goerr/goerr.png?label=ready&title=Ready)](https://waffle.io/goerr/goerr)
-goerr 0.1
-=========
+# goerr 0.1 [![GoDoc](https://godoc.org/github.com/goerr/goerr?status.svg)](https://godoc.org/github.com/goerr/goerr) [![Bug Reports](https://badge.waffle.io/goerr/goerr.png?label=bug&title=bug%20reports)](http://waffle.io/goerr/goerr)  [![Build Status](https://travis-ci.org/goerr/goerr.svg?branch=master)](https://travis-ci.org/goerr/goerr) [![Code Climate](https://codeclimate.com/github/goerr/goerr/badges/gpa.svg)](https://codeclimate.com/github/goerr/goerr) [![Test Coverage](https://codeclimate.com/github/goerr/goerr/badges/coverage.svg)](https://codeclimate.com/github/goerr/goerr)
 
 strip / add error handling to a go file
 
-[![GoDoc](https://godoc.org/github.com/goerr/goerr?status.svg)](https://godoc.org/github.com/goerr/goerr)
+* [Getting started](https://github.com/goerr/goerr/wiki/Getting-started)
+* [Todo](https://github.com/goerr/goerr/wiki/TODO)
 
-[Getting started](https://github.com/goerr/goerr/wiki/Getting-started)
-[Todo](https://github.com/goerr/goerr/wiki/TODO)
-
-CI
-==
 
 [![Build Status](https://drone.io/github.com/goerr/goerr/status.png)](https://drone.io/github.com/goerr/goerr/latest)
-
-
 [![wercker status](https://app.wercker.com/status/6ddf46e485350cb0f8575517e3e50b53/s "wercker status")](https://app.wercker.com/project/bykey/6ddf46e485350cb0f8575517e3e50b53)
-
-
-[![Build Status](https://travis-ci.org/goerr/goerr.svg?branch=master)](https://travis-ci.org/goerr/goerr)
-
