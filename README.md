@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/goerr/goerr.png?label=ready&title=Ready)](https://waffle.io/goerr/goerr)
 goerr 0.1
 =========
 
