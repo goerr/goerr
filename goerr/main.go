@@ -356,9 +356,17 @@ func hanAction(c *cli.Context) {
 	fc, _ := parser.ParseFile(fsetc, codefile, nil, 0)
 	fe, _ := parser.ParseFile(fsete, errfile, nil, 0)
 
+	imports := []string{
+		"\"github.com/goerr/goerr\"",
+		"\"gopkg.cc/goerr/goerr/v0.1\"",
+		"\"gopkg.in/goerr/goerr.v0\""}
+
 	for _, s := range fc.Imports {
-		if s.Path.Value == "\"github.com/goerr/goerr\"" {
-			s.Path.Value = ""
+
+		for _, im := range imports {
+			if s.Path.Value == im {
+				s.Path.Value = ""
+			}
 		}
 	}
 
