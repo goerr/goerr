@@ -115,6 +115,11 @@ func OR0(fun q, args ...interface{}) {
 	errvariadic(fun, toValues(args))
 }
 
+//XR0 is a returner for 0 return-valued functions without arguments.
+func XR0(fun q) {
+	errvariadic(fun, []reflect.Value{})
+}
+
 // internal variadic returner
 func errvariadic(fun interface{}, vals []reflect.Value) (out []interface{}) {
 	defer func() {
