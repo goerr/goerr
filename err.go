@@ -115,6 +115,60 @@ func OR0(fun q, args ...interface{}) {
 	errvariadic(fun, toValues(args))
 }
 
+// XR9 is a returner for 9 return-valued functions
+func XR9(fun q, args ...interface{}) (q, q, q, q, q, q, q, q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1], o[2], o[3], o[4], o[5], o[6], o[7], o[8]
+}
+
+// XR8 is a returner for 8 return-valued functions
+func XR8(fun q, args ...interface{}) (q, q, q, q, q, q, q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1], o[2], o[3], o[4], o[5], o[6], o[7]
+}
+
+// XR7 is a returner for 7 return-valued functions
+func XR7(fun q, args ...interface{}) (q, q, q, q, q, q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1], o[2], o[3], o[4], o[5], o[6]
+}
+
+// XR6 is a returner for 6 return-valued functions
+func XR6(fun q, args ...interface{}) (q, q, q, q, q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1], o[2], o[3], o[4], o[5]
+}
+
+// XR5 is a returner for 5 return-valued functions
+func XR5(fun q, args ...interface{}) (q, q, q, q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1], o[2], o[3], o[4]
+}
+
+// XR4 is a returner for 4 return-valued functions
+func XR4(fun q, args ...interface{}) (q, q, q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1], o[2], o[3]
+}
+
+// XR3 is a returner for 3 return-valued functions
+func XR3(fun q, args ...interface{}) (q, q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1], o[2]
+}
+
+// XR2 is a returner for 2 return-valued functions
+func XR2(fun q, args ...interface{}) (q, q) {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0], o[1]
+}
+
+// XR1 is a returner for 1 return-valued functions
+func XR1(fun q) q {
+	o := errvariadic(fun, []reflect.Value{})
+	return o[0]
+}
+
 //XR0 is a returner for 0 return-valued functions without arguments.
 func XR0(fun q) {
 	errvariadic(fun, []reflect.Value{})
