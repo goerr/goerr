@@ -329,7 +329,8 @@ func (s *spewlord) Visit(node ast.Node) ast.Visitor {
 			nnn.Fun = ast.NewIdent("recover")
 			return s
 		}
-		if funsel.Name[:2] == "OR" {
+		if 3 == len(funsel.Name) &&
+			funsel.Name[:2] == "OR" || funsel.Name[:2] == "XR" {
 			if len(nnn.Args) != 0 {
 				nnn.Fun = nnn.Args[0]
 				nnn.Args = nnn.Args[1:]
