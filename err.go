@@ -111,8 +111,8 @@ func OR1(fun q, args ...interface{}) q {
 //Every function that contains
 //wrappers who call Return(N), must be wrapped in a matching returner
 //to obtain N return values. Otherwise, you get a panic from the Return.
-func OR0(fun q) {
-	errvariadic(fun, []reflect.Value{})
+func OR0(fun q, args ...interface{}) {
+	errvariadic(fun, toValues(args))
 }
 
 // internal variadic returner
